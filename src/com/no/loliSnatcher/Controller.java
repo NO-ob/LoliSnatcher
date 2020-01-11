@@ -29,20 +29,24 @@ public class Controller {
     private void processSearch(ActionEvent event){
 
         if (!searchField.getText().isEmpty()){
+            imageGrid.getChildren().clear();
             ArrayList<BooruItem> fetched = model.search(searchField.getText());
             System.out.println(fetched.get(1).tags);
             int rowNum = 0;
-            for (int i = 0; i <= 20; i+=4) {
-                for (int y = 0; y <=3; y++){
-                    ImageView image1 = new ImageView(fetched.get(i+y).sampleURL);
-                    image1.setFitWidth(100);
-                    image1.setPreserveRatio(true);
-                    image1.setId("img_"+fetched.get(i+y).postID);
-                    imageGrid.add(image1, y, rowNum);
+            int colNum = 0;
+            int imgCount = 0;
 
-                }
-                rowNum++;
+            while (imgCount < fetched.size()){
+                if (colNum > 3){rowNum++;colNum = 0;}
+                ImageView image1 = new ImageView(fetched.get(imgCount).sampleURL);
+                image1.setFitWidth((imagePreviews.getLayoutBounds().getWidth() / 4) *0.9);
+                image1.setPreserveRatio(true);
+                image1.setId("img_"+fetched.get(imgCount).postID);
+                imageGrid.add(image1,colNum, rowNum);
+                imgCount ++;
+                colNum ++;
             }
+
         }
 
     }
