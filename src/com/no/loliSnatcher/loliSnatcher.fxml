@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.beans.property.* ?>
+<VBox fx:controller="com.no.loliSnatcher.Controller" prefWidth="800"
+          xmlns:fx="http://javafx.com/fxml" alignment="center"
+          >
+<padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+    <HBox prefWidth="800">
+        <TextField fx:id="searchField" prefHeight="40" prefWidth="100"/>
+        <Button fx:id="searchButton" text="Search" prefHeight="40" onAction="#processSearch"></Button>
+    </HBox>
+    <ScrollPane fx:id="imagePreviews" fitToWidth="true" prefHeight="500" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <GridPane fx:id="imageGrid"  >
+            <columnConstraints>
+                <ColumnConstraints percentWidth="25"
+                                   maxWidth="Infinity" halignment="LEFT">
+                </ColumnConstraints>
+                <ColumnConstraints percentWidth="25"
+                                   maxWidth="Infinity" >
+                </ColumnConstraints>
+                <ColumnConstraints percentWidth="25"
+                                   maxWidth="Infinity">
+                </ColumnConstraints>
+                <ColumnConstraints percentWidth="25"
+                                   maxWidth="Infinity">
+                </ColumnConstraints>
+
+            </columnConstraints>
+
+        </GridPane>
+    </ScrollPane>
+</VBox>
