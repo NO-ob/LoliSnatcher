@@ -14,7 +14,7 @@ private int pageNum = 0;
 private int limit = 20;
     public ArrayList Search(String tags){
         String https_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=" +
-                tags.replaceAll(" ","+") + "&limit=" + limit + "&pid = " + pageNum;
+                tags.replaceAll(" ","+")+ "+rating:safe" + "&limit=" + limit + "&pid = " + pageNum;
         URL url;
         try {
 
