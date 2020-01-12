@@ -12,14 +12,16 @@ import javax.net.ssl.HttpsURLConnection;
 public class BooruHandler{
 private int pageNum = 0;
 private int limit = 20;
+ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
     public ArrayList Search(String tags){
         String https_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=" +
-                tags.replaceAll(" ","+")+ "+rating:safe" + "&limit=" + limit + "&pid = " + pageNum;
+                tags.replaceAll(" ","+")+ "+rating:safe" + "&limit=" + limit + "&pid=" + pageNum;
         URL url;
         try {
 
             url = new URL(https_url);
             HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
+            pageNum ++;
             return getItems(conn);
 
         } catch (MalformedURLException e) {
@@ -38,11 +40,9 @@ private int limit = 20;
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
                 String input;
-                ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
-
                while ((input = br.readLine()) != null){
                     if (input.contains("<post ")) {
-                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getTags(input),getPostID(input)));
+                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostID(input)));
                     }
                 }
                 br.close();
@@ -65,6 +65,14 @@ private int limit = 20;
     }
     private String getSampleURL(String input){
         Pattern file_url = Pattern.compile("sample_url=\\\"(.*?)\\\"");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+    private String getThumbnailURL(String input){
+        Pattern file_url = Pattern.compile("preview_url=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return matcher.group(1);
