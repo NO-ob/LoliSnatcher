@@ -3,19 +3,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("loliSnatcher.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Search.fxml"));
         primaryStage.setTitle("Loli Snatcher");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
