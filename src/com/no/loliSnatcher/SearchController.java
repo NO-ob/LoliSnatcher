@@ -110,6 +110,10 @@ public class SearchController {
         int id =  Integer.parseInt(imgID);
         model.imageWindowLoader(id);
     }
+    @FXML
+    private void snatcherWindowLoader() throws Exception {
+        model.snatcherWindowLoader(searchField.getText());
+    }
     public void setStage(Stage thisstage) {
         stage = thisstage;
     }

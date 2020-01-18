@@ -18,6 +18,7 @@
     <HBox prefWidth="800">
         <TextField fx:id="searchField" prefHeight="40" prefWidth="500"/>
         <Button fx:id="searchButton" text="Search" prefHeight="40" onAction="#processSearch"></Button>
+        <Button fx:id="snatchButton" text="Snatch" prefHeight="40" onAction="#snatcherWindowLoader"></Button>
     </HBox>
     <ScrollPane fx:id="imagePreviews" fitToWidth="true" prefHeight="500" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <GridPane fx:id="imageGrid"  >
