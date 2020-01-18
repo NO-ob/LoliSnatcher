@@ -41,12 +41,7 @@ public class Model {
             ImageStage.show();
             imageController.setStage(ImageStage);
             imageController.setModel(this);
-              ImageStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                  @Override
-                  public void handle(WindowEvent event) {
-                      imageController = null;
-                  }
-              });
+            ImageStage.setOnCloseRequest(event -> imageController = null);
             } catch (Exception e){}
         }
         imageController.setItem(booruItems.get(id));
@@ -62,17 +57,13 @@ public class Model {
                 Parent root = snatcherLoader.load();
                 snatcherController = snatcherLoader.getController();
                 snatcherController.setTags(tags);
-                snatcherStage.setTitle("Snatch");
+                snatcherStage.setTitle("Snatcher");
                 snatcherStage.setScene(new Scene(root));
                 snatcherStage.show();
                 snatcherController.setStage(snatcherStage);
-                imageController.setModel(this);
-                snatcherStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                    @Override
-                    public void handle(WindowEvent event) {
-                        snatcherController = null;
-                    }
-                });
+                snatcherController.setModel(this);
+                snatcherController.dirField.setText(System.getProperty("user.home")+"/Pictures/");
+                snatcherStage.setOnCloseRequest(event -> snatcherController = null);
             } catch (Exception e){}
         }
     }
