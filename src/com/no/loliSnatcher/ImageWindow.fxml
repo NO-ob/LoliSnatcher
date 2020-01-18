@@ -14,7 +14,10 @@
       fx:controller="com.no.loliSnatcher.ImageWindowController" fx:id="main" prefWidth="800" prefHeight="600"
       >
 
-    <ImageView fx:id="fullImage">
+    <ImageView fx:id="fullImage" >
     </ImageView>
-    <Text fx:id="txtTags"></Text>
+    <HBox fx:id="tagBox" >
+        <ListView fx:id="tagList" maxHeight="50"/>
+        <Button fx:id="saveButton" text="Save" prefHeight="40" onAction="#saveImage"></Button>
+    </HBox>
 </VBox>

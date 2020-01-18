@@ -9,7 +9,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("Search.fxml"));
+        //Parent root = new FXMLLoader(getClass().getResource("Search.fxml"));
+        FXMLLoader searchLoader = new FXMLLoader(getClass().getResource("Search.fxml"));
+        Parent root = searchLoader.load();
+        SearchController searchController = searchLoader.getController();
+        searchController.setStage(primaryStage);
         primaryStage.setTitle("Loli Snatcher");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
