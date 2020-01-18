@@ -7,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Model {
     private BooruHandler gelbooru;
     ImageWindowController imageController = null;
     ArrayList<BooruItem> booruItems = null;
-    private SearchController searchController;
+    public SearchController searchController;
+    public SnatcherController snatcherController;
     public Model(SearchController controller){
         searchController = controller;
     }
@@ -53,6 +53,28 @@ public class Model {
         imageController.setTags();
         imageController.setImg();
 
+    }
+    public void snatcherWindowLoader(String tags) throws Exception {
+        if (snatcherController == null){
+            try {
+                Stage snatcherStage = new Stage();
+                FXMLLoader snatcherLoader = new FXMLLoader(getClass().getResource("Snatcher.fxml"));
+                Parent root = snatcherLoader.load();
+                snatcherController = snatcherLoader.getController();
+                snatcherController.setTags(tags);
+                snatcherStage.setTitle("Snatch");
+                snatcherStage.setScene(new Scene(root));
+                snatcherStage.show();
+                snatcherController.setStage(snatcherStage);
+                imageController.setModel(this);
+                snatcherStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        snatcherController = null;
+                    }
+                });
+            } catch (Exception e){}
+        }
     }
     public void searchWindowLoader(){
 

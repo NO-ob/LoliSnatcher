@@ -11,12 +11,16 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class BooruHandler{
 private int pageNum = 0;
-private int limit = 20;
+public int limit = 20;
 private String prevTags = "";
+public String apiKey = "";
+public String userID = "";
 ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
+
     public ArrayList Search(String tags){
         String https_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=" +
-                tags.replaceAll(" ","+")+ "+rating:safe" + "&limit=" + limit + "&pid=" + pageNum;
+                tags.replaceAll(" ","+")+ "+rating:safe" + "&limit=" + limit + "&pid=" + pageNum
+                +"&api_key=" + apiKey + "&user_id=" + userID;
         URL url;
         if(!prevTags.equals(tags)){
             System.out.println("Reset Search!");

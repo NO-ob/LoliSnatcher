@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.no.loliSnatcher.SnatcherController"
+            prefHeight="400.0" prefWidth="600.0" fx:id="main">
+
+        <columnConstraints>
+            <ColumnConstraints percentWidth="45"
+                               maxWidth="Infinity" halignment="CENTER">
+            </ColumnConstraints>
+            <ColumnConstraints percentWidth="45"
+                               maxWidth="Infinity" halignment="CENTER">
+            </ColumnConstraints>
+        </columnConstraints>
+        <Label text="Image Amount"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="amountField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label text="Directory"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="dirField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Tags" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="tagsField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="API Key" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="apiKeyField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="User ID" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <Button text="Snatch"  onAction="#snatch" fx:id="snatchButton" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Label fx:id="progress" text="Progress" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Label fx:id="fileName" text="" GridPane.rowIndex="7" GridPane.columnSpan="2"/>
+</GridPane>
