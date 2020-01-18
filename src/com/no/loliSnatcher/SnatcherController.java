@@ -32,6 +32,7 @@ public class SnatcherController {
     Label progress;
     public void setModel(Model mod){model = mod;}
     public void setStage(Stage snatcherStage){stage = snatcherStage;}
+
     @FXML
     public void snatch(){
         String tags = tagsField.getText();
