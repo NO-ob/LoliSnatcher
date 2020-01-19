@@ -53,7 +53,7 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
                 String input;
                while ((input = br.readLine()) != null){
                     if (input.contains("<post ")) {
-                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostID(input)));
+                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostURL(input)));
                     }
                 }
                 br.close();
@@ -98,11 +98,12 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-    private String getPostID(String input){
-        Pattern file_url = Pattern.compile("id=\\\"(.*?)\\\"");
+    private String getPostURL(String input){
+        Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            return matcher.group(1);
+            System.out.println("id = "+matcher.group(1));
+            return "https://gelbooru.com/index.php?page=post&s=view&id=" + matcher.group(1);
         }
         return null;
     }
