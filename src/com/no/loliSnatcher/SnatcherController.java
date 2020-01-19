@@ -9,7 +9,6 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javax.imageio.ImageIO;
-import javax.swing.event.ChangeListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
