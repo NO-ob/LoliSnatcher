@@ -20,9 +20,12 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 public class ImageWindowController {
@@ -83,6 +86,21 @@ public class ImageWindowController {
 
         } catch (IOException e){
             throw new RuntimeException();
+        }
+    }
+    @FXML private void openImage() throws IOException,URISyntaxException {
+        if (System.getProperty("os.name").startsWith("Windows")){
+            try {
+                Desktop.getDesktop().browse(new URI(imageItem.postURL));
+            } catch (IOException | URISyntaxException e) {
+                e.printStackTrace();
+            }
+        } else{
+            try {
+                Runtime.getRuntime().exec("xdg-open " + imageItem.postURL);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
