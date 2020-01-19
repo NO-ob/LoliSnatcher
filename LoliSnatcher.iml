@@ -10,5 +10,6 @@
     <orderEntry type="library" name="javafx-11" level="application" />
     <orderEntry type="library" name="JavaFX-11" level="project" />
     <orderEntry type="library" name="JavaFX 11" level="application" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

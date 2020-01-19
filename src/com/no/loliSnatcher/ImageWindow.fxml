@@ -19,5 +19,6 @@
     <HBox fx:id="tagBox" >
         <ListView fx:id="tagList" maxHeight="50"/>
         <Button fx:id="saveButton" text="Save" prefHeight="40" onAction="#saveImage"></Button>
+        <Button fx:id="browserButton" text="Open in Browser" prefHeight="40" onAction="#openImage"></Button>
     </HBox>
 </VBox>

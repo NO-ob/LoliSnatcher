@@ -5,12 +5,12 @@ public class BooruItem {
     String sampleURL;
     String thumbnailURL;
     String tags;
-    String postID;
-    public BooruItem(String fileurl, String sampleurl,String thumburl, String tag,String ID){
+    String postURL;
+    public BooruItem(String fileurl, String sampleurl,String thumburl, String tag,String posturl){
         fileURL = fileurl;
         sampleURL = sampleurl;
         thumbnailURL = thumburl;
         tags = tag;
-        postID = ID;
+        postURL = posturl;
     }
 }
