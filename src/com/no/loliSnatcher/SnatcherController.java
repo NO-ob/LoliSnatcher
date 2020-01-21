@@ -37,7 +37,7 @@ public class SnatcherController {
         String tags = tagsField.getText();
         String dir = dirField.getText();
         int amount = Integer.parseInt(amountField.getText());
-        BooruHandler gelbooru = new BooruHandler();
+        GelbooruHandler gelbooru = new GelbooruHandler();
         if (amount <= 100){gelbooru.limit = amount;} else{gelbooru.limit = 100;}
 
         ArrayList<BooruItem> fetched = null;

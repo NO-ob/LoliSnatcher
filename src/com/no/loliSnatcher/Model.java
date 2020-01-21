@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 public class Model {
-    private BooruHandler gelbooru;
+    private GelbooruHandler booruHandler;
     ImageWindowController imageController = null;
     ArrayList<BooruItem> booruItems = null;
     public SearchController searchController;
@@ -17,14 +17,22 @@ public class Model {
         searchController = controller;
     }
 
-    public ArrayList<BooruItem> search(String tags){
-        gelbooru = new BooruHandler();
-        booruItems = gelbooru.Search(tags);
+    public ArrayList<BooruItem> search(String tags,String booruName){
+        switch (booruName){
+            case ("Gelbooru"):
+                booruHandler = new GelbooruHandler();
+                break;
+            case("Danbooru"):
+                booruHandler = new DanbooruHandler();
+        }
+         
+        
+        booruItems = booruHandler.Search(tags);
         return booruItems;
     }
 
     public ArrayList<BooruItem> getNextPage(String tags){
-        return gelbooru.Search(tags);
+        return booruHandler.Search(tags);
     }
 
     public void imageWindowLoader(int id) throws Exception {
