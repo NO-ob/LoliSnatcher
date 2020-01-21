@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 
@@ -50,8 +51,8 @@ public class SearchController {
             if (!prevTags.equals(searchField)){
                 colNum = 0;
             }
-            Label selected = (Label) booruSelector.getValue();
-            ArrayList<BooruItem> fetched = model.search(searchField.getText(),selected.getText() );
+            Booru selected = (Booru) booruSelector.getValue();
+            ArrayList<BooruItem> fetched = model.search(searchField.getText(),selected.getName() );
             System.out.println(fetched.size());
              if (fetched.size() > 0) {
                  System.out.println(fetched.get(0).tags);
@@ -94,7 +95,6 @@ public class SearchController {
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
                     System.out.println(oldValue.intValue() + " " +newValue.intValue());
                     if(newValue.intValue() == 1 && oldValue.intValue()!= 1){
-                        //imagePreviews.setVvalue((double)imgCount / rowNum);
                         System.out.println("hit bottom");
                         scrollLoad();
 
@@ -108,27 +108,29 @@ public class SearchController {
     }
     @FXML
     private void snatcherWindowLoader() throws Exception {
+        Booru selected = (Booru) booruSelector.getValue();
         model.snatcherWindowLoader(searchField.getText());
     }
     public void setStage(Stage thisstage) {
         stage = thisstage;
-        ObservableList<Label> booruChoices = FXCollections.observableArrayList();
-        booruChoices.add(new Label("Gelbooru", new ImageView("https://gelbooru.com/favicon.ico")));
-        booruChoices.add(new Label("Danbooru", new ImageView("https://i.imgur.com/7ek8bNs.png")));
+        ObservableList<Booru> booruChoices = FXCollections.observableArrayList();
+        booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico"));
+        booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png"));
         booruSelector.getItems().addAll(booruChoices);
         booruSelector.setCellFactory(param -> {
-            return new ListCell<Label>() {
+            return new ListCell<Booru>() {
                 @Override
-                public void updateItem(Label item, boolean empty) {
+                public void updateItem(Booru item, boolean empty) {
                     super.updateItem(item, empty);
 
                     if (item != null) {
-                        setGraphic(item.getGraphic());
-                        setText(item.getText());
+                        setText(item.getName());
+                        setGraphic(new ImageView(item.getImageUrl()));
                     }
                 }
             };
         });
+        booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
         booruSelector.getSelectionModel().select(0);
     }
     public void putTag(String tag){

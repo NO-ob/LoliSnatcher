@@ -58,9 +58,9 @@ public class DanbooruHandler extends GelbooruHandler {
                         postURL = getPostURL(input);
                     }else if (input.contains("<tag-string>")){
                         tagList = getTags(input);
-                    }else if (input.contains("<file-url")){
-                        sampleURL = getSampleURL(input);
                     }else if (input.contains("<large-file-url")){
+                        sampleURL = getSampleURL(input);
+                    }else if (input.contains("<file-url")){
                         fileURL = getFileURL(input);
                     }else if (input.contains("<preview-file-url")){
                         thumbnailURL = getThumbnailURL(input);
@@ -93,16 +93,16 @@ public class DanbooruHandler extends GelbooruHandler {
         return null;
     }
     private String getFileURL(String input){
-        Pattern file_url = Pattern.compile("<large-file-url>(.*?)</large-file-url>");
+        Pattern file_url = Pattern.compile("<file-url>(.*?)</file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println(matcher.group(1));
+            System.out.println("file url = " + matcher.group(1));
             return matcher.group(1);
         }
         return null;
     }
     private String getSampleURL(String input){
-        Pattern file_url = Pattern.compile("<file-url>(.*?)</file-url>");
+        Pattern file_url = Pattern.compile("<large-file-url>(.*?)</large-file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             System.out.println(matcher.group(1));
@@ -114,7 +114,6 @@ public class DanbooruHandler extends GelbooruHandler {
         Pattern file_url = Pattern.compile("<preview-file-url>(.*?)</preview-file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println(matcher.group(1));
             return matcher.group(1);
         }
         return null;
@@ -123,7 +122,6 @@ public class DanbooruHandler extends GelbooruHandler {
         Pattern file_url = Pattern.compile("<tag-string>(.*?)</tag-string>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println(matcher.group(1));
             return matcher.group(1);
         }
         return null;
