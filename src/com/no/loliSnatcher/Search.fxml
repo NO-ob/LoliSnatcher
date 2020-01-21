@@ -15,10 +15,9 @@
 <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
     <HBox prefWidth="800">
         <TextField fx:id="searchField" prefHeight="40" prefWidth="500"/>
-        <ComboBox prefHeight="40" fx:id="booruSelector">
-        </ComboBox>
-        <Button fx:id="searchButton" text="Search" prefHeight="40" onAction="#processSearch"></Button>
-        <Button fx:id="snatchButton" text="Snatch" prefHeight="40" onAction="#snatcherWindowLoader"></Button>
+        <ComboBox prefHeight="40" fx:id="booruSelector"/>
+        <Button fx:id="searchButton" text="Search" prefHeight="40" onAction="#processSearch"/>
+        <Button fx:id="snatchButton" text="Snatch" prefHeight="40" onAction="#snatcherWindowLoader"/>
     </HBox>
     <ScrollPane fx:id="imagePreviews" fitToWidth="true" prefHeight="500" GridPane.columnIndex="0" GridPane.rowIndex="0">
         <GridPane fx:id="imageGrid"  >
