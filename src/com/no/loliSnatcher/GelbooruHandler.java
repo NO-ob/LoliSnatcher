@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class BooruHandler{
+public class GelbooruHandler {
 private int pageNum = 0;
 public int limit = 20;
 private String prevTags = "";

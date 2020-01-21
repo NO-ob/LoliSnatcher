@@ -1,12 +1,12 @@
 package com.no.loliSnatcher;
 
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +29,8 @@ public class SearchController {
     private ScrollPane imagePreviews;
     @FXML
     private GridPane imageGrid;
+    @FXML
+    private ComboBox booruSelector;
     private Stage stage;
     int imgCount = 0;
     int rowNum = 0;
@@ -36,6 +38,9 @@ public class SearchController {
     int colNum = 0;
     int colMax = 1;
     String prevTags = "";
+    public SearchController(){
+
+    }
     @FXML
     private void processSearch(ActionEvent event){
 
@@ -45,7 +50,8 @@ public class SearchController {
             if (!prevTags.equals(searchField)){
                 colNum = 0;
             }
-            ArrayList<BooruItem> fetched = model.search(searchField.getText());
+            Label selected = (Label) booruSelector.getValue();
+            ArrayList<BooruItem> fetched = model.search(searchField.getText(),selected.getText() );
             System.out.println(fetched.size());
              if (fetched.size() > 0) {
                  System.out.println(fetched.get(0).tags);
@@ -106,6 +112,24 @@ public class SearchController {
     }
     public void setStage(Stage thisstage) {
         stage = thisstage;
+        ObservableList<Label> booruChoices = FXCollections.observableArrayList();
+        booruChoices.add(new Label("Gelbooru", new ImageView("https://gelbooru.com/favicon.ico")));
+        booruChoices.add(new Label("Danbooru", new ImageView("https://i.imgur.com/7ek8bNs.png")));
+        booruSelector.getItems().addAll(booruChoices);
+        booruSelector.setCellFactory(param -> {
+            return new ListCell<Label>() {
+                @Override
+                public void updateItem(Label item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item != null) {
+                        setGraphic(item.getGraphic());
+                        setText(item.getText());
+                    }
+                }
+            };
+        });
+        booruSelector.getSelectionModel().select(0);
     }
     public void putTag(String tag){
         searchField.appendText(" "+tag);
