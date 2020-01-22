@@ -143,18 +143,22 @@ public class SearchController {
         booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png"));
         booruSelector.getItems().addAll(booruChoices);
         // Need to specify a custom cell factory to be able to display icons and text
-        booruSelector.setCellFactory(param -> {
-            return new ListCell<Booru>() {
-                @Override
-                public void updateItem(Booru item, boolean empty) {
-                    super.updateItem(item, empty);
+        booruSelector.setCellFactory(param -> new ListCell<Booru>() {
+            final ImageView graphicNode = new ImageView();
+            @Override
+            public void updateItem(Booru item, boolean empty) {
 
-                    if (item != null) {
-                        setText(item.getName());
-                        setGraphic(new ImageView(item.getFaviconUrl()));
-                    }
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setGraphic(null);
+                    graphicNode.setImage(null);
+                }else {
+                    setText(item.getName());
+                    graphicNode.setImage(item.getFavicon());
+                    setGraphic(graphicNode);
                 }
-            };
+            }
         });
         booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
         // Sets default item to first in booruChoices
