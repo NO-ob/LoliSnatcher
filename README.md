@@ -24,5 +24,5 @@ Tasks
 - [ ] Design UI
     - [ ] Tidy UI
     - [ ] Themes
-- [] Webm and Gif support
+- [ ] Webm and Gif support
 
