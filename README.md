@@ -14,14 +14,15 @@ Tasks
 - [x] View Tags and Full Sized Image in a new window
 - [x] Batch download Images from gelbooru
 - [x] Add support for danbooru
-- [] Add settings
-- [] Amount of images to fetch in one go
-- [] Save location
-- [] More boorus
-- [] Timeout between Snatching
-- [] Default Tags
-- [] Amount of columns in main window
-- [] Tidy/Design UI
-- [] Themes
+- [ ] Add settings window/manager
+    - [ ] Amount of images to fetch in one go
+    - [ ] Save location
+    - [ ] More boorus
+    - [ ] Timeout between Snatching
+    - [ ] Default Tags
+    - [ ] Amount of columns in main window
+- [ ] Design UI
+    - [ ] Tidy UI
+    - [ ] Themes
 - [] Webm and Gif support
 
