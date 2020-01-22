@@ -90,7 +90,7 @@ public class ImageWindowController {
     @FXML
     private void saveImage(){
 
-        File imageFile = new File(System.getProperty("user.home")+"/Pictures/test."+ imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf("/")+1));
+        File imageFile = new File(System.getProperty("user.home")+"/Pictures/loliSnatcher/"+ imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf("/")+1));
         BufferedImage image = SwingFXUtils.fromFXImage(fullImage.getImage(),null);
 
         try {

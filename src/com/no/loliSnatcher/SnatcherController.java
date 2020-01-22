@@ -3,7 +3,9 @@ package com.no.loliSnatcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
@@ -55,18 +57,22 @@ public class SnatcherController {
         booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png"));
         booruSelector.getItems().addAll(booruChoices);
         // Need to specify a custom cell factory to be able to display icons and text
-        booruSelector.setCellFactory(param -> {
-            return new ListCell<Booru>() {
-                @Override
-                public void updateItem(Booru item, boolean empty) {
-                    super.updateItem(item, empty);
+        booruSelector.setCellFactory(param -> new ListCell<Booru>() {
+            final ImageView graphicNode = new ImageView();
+            @Override
+            public void updateItem(Booru item, boolean empty) {
 
-                    if (item != null) {
-                        setText(item.getName());
-                        setGraphic(new ImageView(item.getFaviconUrl()));
-                    }
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setGraphic(null);
+                    graphicNode.setImage(null);
+                }else {
+                    setText(item.getName());
+                    graphicNode.setImage(item.getFavicon());
+                    setGraphic(graphicNode);
                 }
-            };
+            }
         });
         booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
         // Sets default item to first in booruChoices
@@ -150,12 +156,30 @@ public class SnatcherController {
             }
 
         };
+
         // Displays progress and filename in the window
         ProgressBar bar = new ProgressBar();
         bar.progressProperty().bind(writer.progressProperty());
         fileName.textProperty().bind(writer.titleProperty());
         main.add(bar,1,7);
-        new Thread(writer).start();
+        /** Remove progress bar when task has finished as a progress bar
+         * makes the PC lock up when it is not being updated
+         */
+        writer.setOnFailed(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                main.getChildren().remove(bar);
+            }
+        });
+        writer.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent workerStateEvent) {
+                main.getChildren().remove(bar);
+            }
+        });
+        Thread writerThread = new Thread(writer);
+        writerThread.start();
+
 
     }
 
