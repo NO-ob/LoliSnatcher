@@ -10,16 +10,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * The DanbooruHandler will fetch images and information about them from boorus running on the danbooru engine
+ */
 public class DanbooruHandler extends GelbooruHandler {
     private int pageNum = 0;
+    // Max amount of images per page
     public int limit = 20;
+    // Last searched tags
     private String prevTags = "";
     ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
 
+    /** This will make a connection to the url
+     *
+     * @param tags
+     * @return
+     */
     public ArrayList Search(String tags){
+        // Create a url using tags and other information
         String https_url = "https://danbooru.donmai.us/posts.xml?tags=" +
                 tags.replaceAll(" ","+") + "&limit=" + limit + "&page=" + pageNum;
-        URL url;
+
+        // Resets arraylist if new tags are searched
         if(!prevTags.equals(tags)){
             System.out.println("Reset Search!");
             fetched = new ArrayList<BooruItem>();
@@ -27,8 +39,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         prevTags = tags;
         try {
-
-            url = new URL(https_url);
+            URL url = new URL(https_url);
             HttpsURLConnection conn = (HttpsURLConnection)url.openConnection();
             pageNum ++;
             return getItems(conn);
@@ -41,6 +52,13 @@ public class DanbooruHandler extends GelbooruHandler {
         return null;
 
     }
+
+    /** Reads the fetched page (XML) line by line and then gets the required data from it
+     * it then uses that data to create an ArrayList of BooruItems
+     *
+     * @param conn
+     * @return
+     */
     private ArrayList getItems(HttpsURLConnection conn){
         if(conn!=null){
 
@@ -64,6 +82,7 @@ public class DanbooruHandler extends GelbooruHandler {
                         fileURL = getFileURL(input);
                     }else if (input.contains("<preview-file-url")){
                         thumbnailURL = getThumbnailURL(input);
+
                      //null values if at the end of current post since Danbooru doesn't provide urls for all posts
                     }else if (input.contains("</post>")){
                         postURL=null;
@@ -72,6 +91,7 @@ public class DanbooruHandler extends GelbooruHandler {
                         fileURL=null;
                         thumbnailURL=null;
                     }
+                    // Create BooruItem if all fields have been found
                     if(!(postURL == null)&&!(fileURL == null)&&!(tagList == null)&&!(thumbnailURL == null)&&!(sampleURL == null)) {
                         fetched.add(new BooruItem(fileURL, sampleURL, thumbnailURL, tagList, postURL));
                         postURL=null;
@@ -92,6 +112,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
+
     private String getFileURL(String input){
         Pattern file_url = Pattern.compile("<file-url>(.*?)</file-url>");
         Matcher matcher = file_url.matcher(input);
@@ -101,6 +122,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
+
     private String getSampleURL(String input){
         Pattern file_url = Pattern.compile("<large-file-url>(.*?)</large-file-url>");
         Matcher matcher = file_url.matcher(input);
@@ -110,6 +132,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
+
     private String getThumbnailURL(String input){
         Pattern file_url = Pattern.compile("<preview-file-url>(.*?)</preview-file-url>");
         Matcher matcher = file_url.matcher(input);
@@ -118,6 +141,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
+
     private String getTags(String input){
         Pattern file_url = Pattern.compile("<tag-string>(.*?)</tag-string>");
         Matcher matcher = file_url.matcher(input);
@@ -126,6 +150,7 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
+
     private String getPostURL(String input){
         Pattern file_url = Pattern.compile("<id type=\"integer\">(.*?)</id>");
         Matcher matcher = file_url.matcher(input);
