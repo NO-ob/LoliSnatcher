@@ -22,6 +22,8 @@ Tasks
     - [ ] Default Tags
     - [ ] Amount of columns in main window
 - [ ] Design UI
+    - [ ] Fix Image window layout
+    - [ ] Fix Main window layout
     - [ ] Tidy UI
     - [ ] Themes
 - [ ] Webm and Gif support
