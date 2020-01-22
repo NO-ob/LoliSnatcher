@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * The Model class is used to allow different windows or objects which multiple windows use to talk to eachother
+ */
 public class Model {
     private GelbooruHandler booruHandler;
     ImageWindowController imageController = null;
@@ -17,6 +20,13 @@ public class Model {
         searchController = controller;
     }
 
+    /** A Function which calls a search on a booruhandler
+     *
+     *
+     * @param tags
+     * @param booruName
+     * @return ArrayList of Booru Items
+     */
     public ArrayList<BooruItem> search(String tags,String booruName){
         switch (booruName){
             case ("Gelbooru"):
@@ -31,10 +41,20 @@ public class Model {
         return booruItems;
     }
 
+    /** Calls a search without making a new array
+     *
+     * @param tags
+     * @return ArrayList of Booru Items
+     */
     public ArrayList<BooruItem> getNextPage(String tags){
         return booruHandler.Search(tags);
     }
 
+    /** Opens an image window if it's not already open, if it is it will just pass it a new item
+     *
+     * @param id
+     * @throws Exception
+     */
     public void imageWindowLoader(int id) throws Exception {
         if (imageController == null){
             try {
@@ -51,10 +71,13 @@ public class Model {
             } catch (Exception e){}
         }
         imageController.setItem(booruItems.get(id));
-        imageController.setTags();
-        imageController.setImg();
 
     }
+    /** Open the snatcher window if it's not already open
+     *
+     * @param tags
+     * @throws Exception
+     */
     public void snatcherWindowLoader(String tags) throws Exception {
         if (snatcherController == null){
             try {
@@ -73,9 +96,7 @@ public class Model {
             } catch (Exception e){}
         }
     }
-    public void searchWindowLoader(){
 
-    }
     public void putTag(String tag){
         searchController.putTag(tag);
     }

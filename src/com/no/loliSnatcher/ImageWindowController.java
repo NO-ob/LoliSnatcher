@@ -22,7 +22,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-
+/** Controller for the window which will display the full sized image of the sample selected in the search window
+ *
+ */
 public class ImageWindowController {
     private Stage stage;
     @FXML
@@ -38,30 +40,41 @@ public class ImageWindowController {
     public void setModel(Model mod){
         model = mod;
     }
-    public void setStage(Stage thisstage){
-        stage = thisstage;
+    /**
+     * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
+     * because the GUI doesn't exist at that point
+     **/
+    public void setStage(Stage stage){
+        this.stage = stage;
+
         stage.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
+            //Listens to a change in height and then scales the image view accordingly
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 System.out.println(number);
                 if ((double)t1 > 0) {
                     fullImage.setFitHeight(((double) number) * 0.8);
                 }
-                //stage.setHeight(fullImage.getFitHeight() + 200);
             }
         });
     }
     public void setItem(BooruItem item) {
         imageItem = item;
+        setTags();
+        setImg();
     }
     public void setImg(){
         fullImage.setImage(new Image(imageItem.fileURL));
         fullImage.setFitWidth(stage.getHeight()*0.8);
         fullImage.setPreserveRatio(true);
+
     }
     public void setTags(){
         ObservableList<String> splitTags = FXCollections.observableArrayList(imageItem.tags.split(" "));
         tagList.setItems(splitTags);
+        /**When a specific tag is clicked on it will call model.put tag to parse it to the search controller
+         * which will add it to the search field
+         */
         tagList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -70,11 +83,15 @@ public class ImageWindowController {
             }
         });
     }
+
+    /** Creates a new file and then writes an image to it. It writes the image thats in an image view instead of getting the
+     * image from its url and writing that to save on memory
+     */
     @FXML
     private void saveImage(){
+
         File imageFile = new File(System.getProperty("user.home")+"/Pictures/test."+ imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf("/")+1));
         BufferedImage image = SwingFXUtils.fromFXImage(fullImage.getImage(),null);
-        System.out.println(imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf(".") +1 ));
 
         try {
             ImageIO.write(image, imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf(".")+1),imageFile);
@@ -83,7 +100,14 @@ public class ImageWindowController {
             throw new RuntimeException();
         }
     }
+
+    /** Opens the post url in the default web browser
+     *
+     * @throws IOException
+     * @throws URISyntaxException
+     */
     @FXML private void openImage() throws IOException,URISyntaxException {
+        //Windows method for opening - currently untested
         if (System.getProperty("os.name").startsWith("Windows")){
             try {
                 Desktop.getDesktop().browse(new URI(imageItem.postURL));
@@ -91,6 +115,7 @@ public class ImageWindowController {
                 e.printStackTrace();
             }
         } else{
+            // Linux opening - should also work in MacOS
             try {
                 Runtime.getRuntime().exec("xdg-open " + imageItem.postURL);
             } catch (IOException e) {
