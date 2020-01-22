@@ -19,7 +19,7 @@ touch ~/.local/share/applications/loliSnatcher.desktop
 echo "[Desktop Entry]" >> ~/.local/share/applications/loliSnatcher.desktop
 echo "Name=Loli Snatcher" >> ~/.local/share/applications/loliSnatcher.desktop
 echo "StartupWMClass=com.no.loliSnatcher.Main" >> ~/.local/share/applications/loliSnatcher.desktop
-echo "Exec=env java -jar --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml /home/$USER/.loliSnatcher/LoliSnatcher.jar" >> ~/.local/share/applications/loliSnatcher.desktop
+echo "Exec=env java -jar --module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml,javafx.swing /home/$USER/.loliSnatcher/LoliSnatcher.jar" >> ~/.local/share/applications/loliSnatcher.desktop
 echo "Icon=/home/$USER/.loliSnatcher/icon.png" >> ~/.local/share/applications/loliSnatcher.desktop
 echo "Type=Application" >> ~/.local/share/applications/loliSnatcher.desktop
 echo "Categories=Grpahics" >> ~/.local/share/applications/loliSnatcher.desktop

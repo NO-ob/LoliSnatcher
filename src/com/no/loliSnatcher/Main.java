@@ -3,7 +3,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
@@ -12,10 +14,11 @@ public class Main extends Application {
         //Parent root = new FXMLLoader(getClass().getResource("Search.fxml"));
         FXMLLoader searchLoader = new FXMLLoader(getClass().getResource("Search.fxml"));
         Parent root = searchLoader.load();
+        Scene scene = new Scene(root);
         SearchController searchController = searchLoader.getController();
         searchController.setStage(primaryStage);
         primaryStage.setTitle("Loli Snatcher");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
 
     }
