@@ -1,4 +1,6 @@
-# Loli Snatcher [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+# Loli Snatcher 
+[![github-small](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](https://www.gnu.org/licenses/gpl-3.0)
+
 A Program To Search  and Snatch Images From Boorus
 
 When searching enter tags on one line seperated with spaces
