@@ -19,9 +19,6 @@ import java.util.ArrayList;
  * Controller for the Snatcher window this is what handles the batch downloading [Snatching]
  */
 public class SnatcherController extends Controller{
-    WindowManager model;
-    Stage stage;
-    GelbooruHandler booruHandler;
     @FXML
     GridPane main;
     @FXML
@@ -34,8 +31,7 @@ public class SnatcherController extends Controller{
     Label fileName;
     @FXML
     Label progress;
-    @FXML
-    ComboBox booruSelector;
+
 
 
     @FXML
@@ -55,13 +51,7 @@ public class SnatcherController extends Controller{
         if (!dir.exists()){dir.mkdir();}
 
         Booru selected = (Booru) booruSelector.getValue();
-        switch (selected.getName()){
-            case("Gelbooru"):
-                booruHandler = new GelbooruHandler();
-                break;
-            case("Danbooru"):
-                booruHandler = new DanbooruHandler();
-        }
+        setBooruHandler(selected.getName());
         //Sets limit to 100 if bigger than as gelbooru only allows for 100 items per page
         if (amount <= 100){booruHandler.limit = amount;} else {booruHandler.limit = 100;}
 
@@ -82,23 +72,23 @@ public class SnatcherController extends Controller{
                 for (int i = 0; i < finalFetched.size(); i++){
                     BooruItem item = finalFetched.get(i);
                     // Skips item if it is webm or gif as the javafx image objects cant display them
-                    if (item.fileURL.substring(item.fileURL.lastIndexOf(".") + 1).equals("webm") || item.fileURL.substring(item.fileURL.lastIndexOf(".") + 1).equals("gif")) {
-                        System.out.println("skipped: " + item.fileURL.substring(item.fileURL.lastIndexOf("/") + 1));
+                    if (item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("webm") || item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("gif")) {
+                        System.out.println("skipped: " + item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
                     } else {
                         // Updates the title of the task with the image url
-                        updateTitle(item.fileURL.substring(item.fileURL.lastIndexOf("/") + 1));
+                        updateTitle(item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
                         // Creates a new image from the URL of the current booruitem
                         Image image;
-                        image = new Image(item.fileURL);
+                        image = new Image(item.getFileURL());
                         System.out.println(image.getUrl());
                         while (image.getProgress() != 1){
                             System.out.println("waiting");
                         }
                         //Writes current Image to new file
-                        File imageFile = new File(dirField.getText() + item.fileURL.substring(item.fileURL.lastIndexOf("/") + 1));
+                        File imageFile = new File(dirField.getText() + item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
                         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
                         try {
-                            ImageIO.write(bufferedImage, item.fileURL.substring(item.fileURL.lastIndexOf(".") + 1), imageFile);
+                            ImageIO.write(bufferedImage, item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1), imageFile);
 
                         } catch (IOException e) {
                             throw new RuntimeException();
