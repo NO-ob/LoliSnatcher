@@ -64,13 +64,13 @@ public class ImageWindowController {
         setImg();
     }
     public void setImg(){
-        fullImage.setImage(new Image(imageItem.fileURL));
+        fullImage.setImage(new Image(imageItem.getFileURL()));
         fullImage.setFitWidth(stage.getHeight()*0.8);
         fullImage.setPreserveRatio(true);
 
     }
     public void setTags(){
-        ObservableList<String> splitTags = FXCollections.observableArrayList(imageItem.tags.split(" "));
+        ObservableList<String> splitTags = FXCollections.observableArrayList(imageItem.getTags().split(" "));
         tagList.setItems(splitTags);
         /**When a specific tag is clicked on it will call model.put tag to parse it to the search controller
          * which will add it to the search field
@@ -90,11 +90,11 @@ public class ImageWindowController {
     @FXML
     private void saveImage(){
 
-        File imageFile = new File(System.getProperty("user.home")+"/Pictures/loliSnatcher/"+ imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf("/")+1));
+        File imageFile = new File(System.getProperty("user.home")+"/Pictures/loliSnatcher/"+ imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1));
         BufferedImage image = SwingFXUtils.fromFXImage(fullImage.getImage(),null);
 
         try {
-            ImageIO.write(image, imageItem.fileURL.substring(imageItem.fileURL.lastIndexOf(".")+1),imageFile);
+            ImageIO.write(image, imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf(".")+1),imageFile);
 
         } catch (IOException e){
             throw new RuntimeException();
@@ -110,14 +110,14 @@ public class ImageWindowController {
         //Windows method for opening - currently untested
         if (System.getProperty("os.name").startsWith("Windows")){
             try {
-                Desktop.getDesktop().browse(new URI(imageItem.postURL));
+                Desktop.getDesktop().browse(new URI(imageItem.getPostURL()));
             } catch (IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         } else{
             // Linux opening - should also work in MacOS
             try {
-                Runtime.getRuntime().exec("xdg-open " + imageItem.postURL);
+                Runtime.getRuntime().exec("xdg-open " + imageItem.getPostURL());
             } catch (IOException e) {
                 e.printStackTrace();
             }
