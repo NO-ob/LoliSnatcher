@@ -35,9 +35,9 @@ public class ImageWindowController {
     private Text txtTags;
     @FXML
     private ListView tagList;
-    private Model model;
+    private WindowManager model;
     private BooruItem imageItem;
-    public void setModel(Model mod){
+    public void setModel(WindowManager mod){
         model = mod;
     }
     /**
