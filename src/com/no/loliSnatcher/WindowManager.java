@@ -10,52 +10,42 @@ import java.util.ArrayList;
 /**
  * The Model class is used to allow different windows or objects which multiple windows use to talk to eachother
  */
-public class Model {
-    private GelbooruHandler booruHandler;
+public class WindowManager {
+
     ImageWindowController imageController = null;
-    ArrayList<BooruItem> booruItems = null;
     public SearchController searchController;
     public SnatcherController snatcherController;
-    public Model(SearchController controller){
-        searchController = controller;
+
+
+    public void searchWindowLoader(Stage searchStage) throws Exception {
+        //Parent root = new FXMLLoader(getClass().getResource("Search.fxml"));
+        FXMLLoader searchLoader = new FXMLLoader(getClass().getResource("Search.fxml"));
+        Parent root = searchLoader.load();
+        Scene scene = new Scene(root);
+        searchController = searchLoader.getController();
+        searchController.setStage(searchStage);
+        searchController.setWindowManager(this);
+        searchStage.setTitle("Loli Snatcher");
+        searchStage.setScene(scene);
+        searchStage.show();
+
     }
 
-    /** A Function which calls a search on a booruhandler
-     *
-     *
-     * @param tags
-     * @param booruName
-     * @return ArrayList of Booru Items
-     */
-    public ArrayList<BooruItem> search(String tags,String booruName){
-        switch (booruName){
-            case ("Gelbooru"):
-                booruHandler = new GelbooruHandler();
-                break;
-            case("Danbooru"):
-                booruHandler = new DanbooruHandler();
-        }
-         
-        
-        booruItems = booruHandler.Search(tags);
-        return booruItems;
-    }
+
 
     /** Calls a search without making a new array
      *
      * @param tags
      * @return ArrayList of Booru Items
      */
-    public ArrayList<BooruItem> getNextPage(String tags){
-        return booruHandler.Search(tags);
-    }
+
 
     /** Opens an image window if it's not already open, if it is it will just pass it a new item
      *
-     * @param id
+     * @param booruItem
      * @throws Exception
      */
-    public void imageWindowLoader(int id) throws Exception {
+    public void imageWindowLoader(BooruItem booruItem) throws Exception {
         if (imageController == null){
             try {
             Stage ImageStage = new Stage();
@@ -70,7 +60,7 @@ public class Model {
             ImageStage.setOnCloseRequest(event -> imageController = null);
             } catch (Exception e){}
         }
-        imageController.setItem(booruItems.get(id));
+        imageController.setItem(booruItem);
 
     }
     /** Open the snatcher window if it's not already open
@@ -90,7 +80,7 @@ public class Model {
                 snatcherStage.setScene(new Scene(root));
                 snatcherStage.show();
                 snatcherController.setStage(snatcherStage);
-                snatcherController.setModel(this);
+                snatcherController.setWindowManager(this);
                 snatcherController.dirField.setText(System.getProperty("user.home")+"/Pictures/");
                 snatcherStage.setOnCloseRequest(event -> snatcherController = null);
             } catch (Exception e){}

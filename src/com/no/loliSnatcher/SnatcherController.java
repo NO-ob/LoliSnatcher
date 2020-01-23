@@ -1,14 +1,11 @@
 package com.no.loliSnatcher;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -21,8 +18,8 @@ import java.util.ArrayList;
 /**
  * Controller for the Snatcher window this is what handles the batch downloading [Snatching]
  */
-public class SnatcherController {
-    Model model;
+public class SnatcherController extends Controller{
+    WindowManager model;
     Stage stage;
     GelbooruHandler booruHandler;
     @FXML
@@ -41,47 +38,6 @@ public class SnatcherController {
     ComboBox booruSelector;
 
 
-    public void setModel(Model mod){model = mod;}
-
-    /**
-     * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
-     * because the GUI doesn't exist at that point
-     * @param snatcherStage
-     */
-    public void setStage(Stage snatcherStage){
-
-        stage = snatcherStage;
-        // Adds booru items to the ComboBox
-        ObservableList<Booru> booruChoices = FXCollections.observableArrayList();
-        booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico"));
-        booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png"));
-        booruSelector.getItems().addAll(booruChoices);
-        // Need to specify a custom cell factory to be able to display icons and text
-        booruSelector.setCellFactory(param -> new ListCell<Booru>() {
-            final ImageView graphicNode = new ImageView();
-            @Override
-            public void updateItem(Booru item, boolean empty) {
-
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                    setGraphic(null);
-                    graphicNode.setImage(null);
-                }else {
-                    setText(item.getName());
-                    graphicNode.setImage(item.getFavicon());
-                    setGraphic(graphicNode);
-                }
-            }
-        });
-        booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
-        // Sets default item to first in booruChoices
-        booruSelector.getSelectionModel().select(0);
-    }
-
-    /**
-     * This is the function which actually gets and then writes all the iamge files
-     */
     @FXML
     public void snatch(){
         String tags = tagsField.getText();
@@ -110,7 +66,7 @@ public class SnatcherController {
         if (amount <= 100){booruHandler.limit = amount;} else {booruHandler.limit = 100;}
 
         ArrayList<BooruItem> fetched = null;
-        progress.setText("Fetching Image Data");
+        progress.setText("Snatching Images");
 
         // Loads pages consecutively until the desired amount of images have been fetched
         while (amount > 0){
