@@ -11,15 +11,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Parent root = new FXMLLoader(getClass().getResource("Search.fxml"));
-        FXMLLoader searchLoader = new FXMLLoader(getClass().getResource("Search.fxml"));
-        Parent root = searchLoader.load();
-        Scene scene = new Scene(root);
-        SearchController searchController = searchLoader.getController();
-        searchController.setStage(primaryStage);
-        primaryStage.setTitle("Loli Snatcher");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        WindowManager windowManager = new WindowManager();
+        windowManager.searchWindowLoader(primaryStage);
 
     }
     public static void main(String[] args){
