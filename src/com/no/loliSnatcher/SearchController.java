@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
@@ -20,17 +19,13 @@ public class SearchController extends Controller{
     private ScrollPane imagePreviews;
     @FXML
     private GridPane imageGrid;
-    @FXML
-    private ComboBox booruSelector;
-    ArrayList<BooruItem> booruItems = null;
-    private GelbooruHandler booruHandler;
-    private Stage stage;
+
     int imgCount = 0;
     int rowNum = 0;
     int colNum = 0;
     String prevTags = "";
     /**
-     * Calls the model to get an ArrayList of BooruItems when the searchButton is pressed
+     * Fetches an arrayList of BooruItems when the search button is clicked
      * @param event
      */
     @FXML
@@ -40,13 +35,14 @@ public class SearchController extends Controller{
             imageGrid.getChildren().clear();
             imagePreviews.setVvalue(0);
             // Resets the column number if the search is a new search
-            if (!prevTags.equals(searchField)){
+            if (!prevTags.equals(searchField.getText())){
                 colNum = 0;
             }
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
             // Calls the model to fetch booruItems from the booruHandler
-            ArrayList<BooruItem> fetched = search(searchField.getText(),selected.getName());
+            setBooruHandler(selected.getName());
+             fetched = booruHandler.Search(searchField.getText());
             // Displays images if the fetched list is not empty
              if (fetched.size() > 0) {
                  rowNum = 0;
@@ -61,32 +57,13 @@ public class SearchController extends Controller{
         return booruHandler.Search(tags);
     }
 
-    /** A Function which calls a search on a booruhandler
-     *
-     *
-     * @param tags
-     * @param booruName
-     * @return ArrayList of Booru Items
-     */
-    public ArrayList<BooruItem> search(String tags,String booruName){
-        switch (booruName){
-            case ("Gelbooru"):
-                booruHandler = new GelbooruHandler();
-                break;
-            case("Danbooru"):
-                booruHandler = new DanbooruHandler();
-        }
 
-
-        booruItems = booruHandler.Search(tags);
-        return booruItems;
-    }
 
     /**
      * Gets the next page of Images
      */
     private void scrollLoad() {
-        ArrayList<BooruItem> fetched = getNextPage(searchField.getText());
+        fetched = getNextPage(searchField.getText());
         displayImagePreviews(fetched);
     }
 
@@ -100,14 +77,14 @@ public class SearchController extends Controller{
             // Resets column and increments the row when 4 Image views have been put in the grid
             if (colNum > 3){rowNum++;colNum = 0;}
             // Create an ImageView smaller than 1/4 of the width of the ScrollPane
-            ImageView image1 = new ImageView(new Image(fetched.get(imgCount).sampleURL,((imagePreviews.getLayoutBounds().getWidth() / 4) *0.9),0,true,false,true));
+            ImageView image1 = new ImageView(new Image(fetched.get(imgCount).getSampleURL(),((imagePreviews.getLayoutBounds().getWidth() / 4) *0.9),0,true,false,true));
             image1.setId("img_"+imgCount);
             // Calls the windowManager to load the Image window and parses it a booruItem when clicked
             image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                          @Override public void handle(MouseEvent event) {
                                              try {
                                                  String id = event.getSource().toString().split(",")[0].substring(17);
-                                                 windowManager.imageWindowLoader(booruItems.get(Integer.parseInt(id)));
+                                                 windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)));
                                              } catch (Exception e) {
                                                  e.printStackTrace();
                                              }

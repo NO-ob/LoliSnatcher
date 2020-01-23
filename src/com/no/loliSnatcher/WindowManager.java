@@ -5,16 +5,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-
 /**
  * The WindowManager class is used to create windows and allow them to talk to each other
  */
 public class WindowManager {
 
-    ImageWindowController imageController = null;
-    public SearchController searchController;
-    public SnatcherController snatcherController;
+    private ImageWindowController imageController;
+    private SearchController searchController;
+    private SnatcherController snatcherController;
 
 
     public void searchWindowLoader(Stage searchStage) throws Exception {
@@ -31,16 +29,7 @@ public class WindowManager {
 
     }
 
-
-
-    /** Calls a search without making a new array
-     *
-     * @param tags
-     * @return ArrayList of Booru Items
-     */
-
-
-    /** Opens an image window if it's not already open, if it is it will just pass it a new item
+    /** Opens an image window if it's not already open, if it is it will just parse it a new item
      *
      * @param booruItem
      * @throws Exception
@@ -63,7 +52,7 @@ public class WindowManager {
         imageController.setItem(booruItem);
 
     }
-    /** Open the snatcher window if it's not already open
+    /** Open the snatcher window if it's not already open, if it is it will just pass it a new item
      *
      * @param tags
      * @throws Exception

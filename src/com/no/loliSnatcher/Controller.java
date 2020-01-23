@@ -8,12 +8,21 @@ import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 public class Controller {
     WindowManager windowManager;
     Stage stage;
+    GelbooruHandler booruHandler;
+    ArrayList<BooruItem> fetched;
     @FXML
     ComboBox booruSelector;
     public void setWindowManager(WindowManager windowManager){this.windowManager = windowManager;}
+
+    /** Sets the stage object with and also draws the combo box for selecting a booru
+     *
+     * @param stage
+     */
     public void setStage(Stage stage){
 
         this.stage = stage;
@@ -43,5 +52,18 @@ public class Controller {
         booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
         // Sets default item to first in booruChoices
         booruSelector.getSelectionModel().select(0);
+    }
+    /** A Function which sets a booru handler based on the booruName parsed to it
+     * @param booruName
+     */
+    public void setBooruHandler(String booruName){
+        switch (booruName){
+            case ("Gelbooru"):
+                 booruHandler = new GelbooruHandler();
+                break;
+            case("Danbooru"):
+                booruHandler = new DanbooruHandler();
+        }
+
     }
 }
