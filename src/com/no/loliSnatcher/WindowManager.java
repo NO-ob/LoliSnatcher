@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 /**
- * The Model class is used to allow different windows or objects which multiple windows use to talk to eachother
+ * The WindowManager class is used to create windows and allow them to talk to each other
  */
 public class WindowManager {
 
