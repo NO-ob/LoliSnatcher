@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.no.loliSnatcher.SettingsController"
+      prefHeight="400.0" prefWidth="600.0" fx:id="main">
+        <VBox>
+                <Button fx:id="globalButton" minWidth="80" text="Global" onAction="#switchOpts"/>
+                <Button fx:id="searchButton" minWidth="80" text="Search" onAction="#switchOpts"/>
+                <Button fx:id="snatcherButton" minWidth="80" text="Snatcher" onAction="#switchOpts"/>
+
+        </VBox>
+        <VBox>
+                <ScrollPane>
+                        <StackPane>
+                                <GridPane fx:id="globalOpts">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="45"
+                                                                   maxWidth="Infinity" halignment="CENTER">
+                                                </ColumnConstraints>
+                                                <ColumnConstraints percentWidth="45"
+                                                                   maxWidth="Infinity" halignment="CENTER">
+                                                </ColumnConstraints>
+                                        </columnConstraints>
+                                        <Label text="Save Path"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="savePathField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                <tooltip>
+                                                        <Tooltip text="Path to save Images to"/>
+                                                </tooltip>
+                                        </TextField>
+                                </GridPane>
+                                <GridPane fx:id="searchOpts" visible="false">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="45"
+                                                       maxWidth="Infinity" halignment="CENTER">
+                                    </ColumnConstraints>
+                                    <ColumnConstraints percentWidth="45"
+                                                       maxWidth="Infinity" halignment="CENTER">
+                                    </ColumnConstraints>
+                                </columnConstraints>
+                                <Label text="Limit"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="searchLimitField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <tooltip>
+                                                <Tooltip text="How many images to be fetched per page (1-100)"/>
+                                        </tooltip>
+                                </TextField>
+                                <Label text="Default Tags"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="defaultTagsField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <tooltip>
+                                                <Tooltip text="Default tags to be put in the search field when the program is launched"/>
+                                        </tooltip>
+                                </TextField>
+                                </GridPane>
+                                <GridPane fx:id="snatcherOpts" visible="false">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="45"
+                                                                   maxWidth="Infinity" halignment="CENTER">
+                                                </ColumnConstraints>
+                                                <ColumnConstraints percentWidth="45"
+                                                                   maxWidth="Infinity" halignment="CENTER">
+                                                </ColumnConstraints>
+                                        </columnConstraints>
+                                </GridPane>
+                        </StackPane>
+                </ScrollPane>
+                <Button fx:id="saveButton" minWidth="80" text="Save" onAction="#writeSettings" alignment="BOTTOM_RIGHT"/>
+        </VBox>
+</HBox>
