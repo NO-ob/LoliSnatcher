@@ -40,7 +40,6 @@ public class SearchController extends Controller{
             }
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
-            // Calls the model to fetch booruItems from the booruHandler
             setBooruHandler(selected.getName());
              fetched = booruHandler.Search(searchField.getText());
             // Displays images if the fetched list is not empty
@@ -116,7 +115,10 @@ public class SearchController extends Controller{
         Booru selected = (Booru) booruSelector.getValue();
         windowManager.snatcherWindowLoader(searchField.getText());
     }
-
+    @FXML
+    private void settingsWindowLoader() throws Exception {
+        windowManager.settingsWindowLoader();
+    }
     public void putTag(String tag){
         searchField.appendText(" "+tag);
     }

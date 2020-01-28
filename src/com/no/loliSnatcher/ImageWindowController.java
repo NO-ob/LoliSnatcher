@@ -25,7 +25,7 @@ import java.net.URISyntaxException;
 /** Controller for the window which will display the full sized image of the sample selected in the search window
  *
  */
-public class ImageWindowController {
+public class ImageWindowController extends Controller{
     private Stage stage;
     @FXML
     private ImageView fullImage;
@@ -35,11 +35,7 @@ public class ImageWindowController {
     private Text txtTags;
     @FXML
     private ListView tagList;
-    private WindowManager model;
     private BooruItem imageItem;
-    public void setModel(WindowManager mod){
-        model = mod;
-    }
     /**
      * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
      * because the GUI doesn't exist at that point
@@ -79,7 +75,7 @@ public class ImageWindowController {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("clicked on " + tagList.getSelectionModel().getSelectedItem());
-                model.putTag((String) tagList.getSelectionModel().getSelectedItem());
+                windowManager.putTag((String) tagList.getSelectionModel().getSelectedItem());
             }
         });
     }

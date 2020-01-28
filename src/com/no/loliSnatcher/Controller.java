@@ -17,6 +17,7 @@ public class Controller {
     ArrayList<BooruItem> fetched;
     @FXML
     ComboBox booruSelector;
+
     public void setWindowManager(WindowManager windowManager){this.windowManager = windowManager;}
 
     /** Sets the stage object with and also draws the combo box for selecting a booru
