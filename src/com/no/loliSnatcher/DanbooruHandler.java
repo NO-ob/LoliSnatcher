@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.net.ssl.HttpsURLConnection;
-
 /**
  * The DanbooruHandler will fetch images and information about them from boorus running on the danbooru engine
  */
@@ -45,9 +44,13 @@ public class DanbooruHandler extends GelbooruHandler {
             return getItems(conn);
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            System.out.println("\nDanbooruHandler::Search::MalformedURL");
+            System.out.println("\n"+https_url+"\n");
+            System.out.println(e.toString());
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("\nDanbooruHandler::Search::IOERROR");
+            System.out.println(e.toString());
         }
         return null;
 
@@ -106,7 +109,8 @@ public class DanbooruHandler extends GelbooruHandler {
                 return fetched;
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("\nDanbooruHandler::getItems::IOERROR");
+                System.out.println(e.toString());
             }
 
         }

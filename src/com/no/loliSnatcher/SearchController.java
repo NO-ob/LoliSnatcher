@@ -85,7 +85,8 @@ public class SearchController extends Controller{
                                                  String id = event.getSource().toString().split(",")[0].substring(17);
                                                  windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)));
                                              } catch (Exception e) {
-                                                 e.printStackTrace();
+                                                 System.out.println("SearchController::displayImagePreviews::setOnMouseClicked");
+                                                 System.out.println(e.toString());
                                              }
 
                                          }});

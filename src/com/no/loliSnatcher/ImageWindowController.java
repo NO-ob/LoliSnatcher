@@ -93,7 +93,8 @@ public class ImageWindowController extends Controller{
             ImageIO.write(image, imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf(".")+1),imageFile);
 
         } catch (IOException e){
-            throw new RuntimeException();
+            System.out.println("ImageWindowController::saveImage");
+            System.out.println("\n Failed to Write File \n" + imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1) + "\n");
         }
     }
 
@@ -108,14 +109,16 @@ public class ImageWindowController extends Controller{
             try {
                 Desktop.getDesktop().browse(new URI(imageItem.getPostURL()));
             } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
+                System.out.println("ImageWindowController::openImage");
+                System.out.println("\n Failed to open browser in Windows \n");
             }
         } else{
             // Linux opening - should also work in MacOS
             try {
                 Runtime.getRuntime().exec("xdg-open " + imageItem.getPostURL());
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("ImageWindowController::openImage");
+                System.out.println("\n Failed to open browser in Linux \n");
             }
         }
     }

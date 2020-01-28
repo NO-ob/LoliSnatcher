@@ -46,9 +46,13 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
             return getItems(conn);
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            System.out.println("\nGelbooruHandler::Search::MalformedURL");
+            System.out.println("\n"+https_url+"\n");
+            System.out.println(e.toString());
+
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("\nGelbooruHandler::Search::IOERROR");
+            System.out.println(e.toString());
         }
         return null;
 
@@ -75,7 +79,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
                 return fetched;
 
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("\nGelbooruHandler::GetItems::IOERROR");
+                System.out.println(e.toString());
             }
 
         }
