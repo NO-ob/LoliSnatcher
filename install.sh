@@ -13,7 +13,7 @@ fi
 LSDIR="$HOME/.loliSnatcher/"
 mkdir "$LSDIR"
 ### Get JavaFX if it is not already in program dir ###
-if [ ! -d "/home/$USER/.loliSnatcher/javafx-sdk-11.0.2" ]; then
+if [ ! -d "$LSDIR/javafx-sdk-11.0.2" ]; then
 	wget https://download2.gluonhq.com/openjfx/11.0.2/openjfx-11.0.2_linux-x64_bin-sdk.zip
 	unzip openjfx-11.0.2_linux-x64_bin-sdk.zip -d "$LSDIR"
 	rm openjfx-11.0.2_linux-x64_bin-sdk.zip

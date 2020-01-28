@@ -13,6 +13,7 @@ public class WindowManager {
     private ImageWindowController imageController;
     private SearchController searchController;
     private SnatcherController snatcherController;
+    private SettingsController settingsController;
 
 
     public void searchWindowLoader(Stage searchStage) throws Exception {
@@ -45,7 +46,7 @@ public class WindowManager {
             ImageStage.setScene(new Scene(root));
             ImageStage.show();
             imageController.setStage(ImageStage);
-            imageController.setModel(this);
+            imageController.setWindowManager(this);
             ImageStage.setOnCloseRequest(event -> imageController = null);
             } catch (Exception e){}
         }
@@ -74,6 +75,27 @@ public class WindowManager {
                 snatcherStage.setOnCloseRequest(event -> snatcherController = null);
             } catch (Exception e){}
         }
+    }
+    /** Opens the settings window if it's not already open
+     *
+     * @throws Exception
+     */
+    public void settingsWindowLoader() throws Exception {
+        if (settingsController == null){
+            try {
+                Stage settingsStage = new Stage();
+                FXMLLoader settingsLoader = new FXMLLoader(getClass().getResource("Settings.fxml"));
+                Parent root = settingsLoader.load();
+                settingsController = settingsLoader.getController();
+                settingsStage.setTitle("Settings");
+                settingsStage.setScene(new Scene(root));
+                settingsStage.show();
+                settingsController.setStage(settingsStage);
+                settingsController.setWindowManager(this);
+                settingsStage.setOnCloseRequest(event -> settingsController = null);
+            } catch (Exception e){}
+        }
+        settingsController.update();
     }
 
     public void putTag(String tag){
