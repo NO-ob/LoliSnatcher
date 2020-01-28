@@ -48,7 +48,10 @@ public class WindowManager {
             imageController.setStage(ImageStage);
             imageController.setWindowManager(this);
             ImageStage.setOnCloseRequest(event -> imageController = null);
-            } catch (Exception e){}
+            } catch (Exception e){
+                System.out.println("\nWindowManager::imageWindowLoader");
+                System.out.println(e.toString());
+            }
         }
         imageController.setItem(booruItem);
 
@@ -73,7 +76,10 @@ public class WindowManager {
                 snatcherController.setWindowManager(this);
                 snatcherController.dirField.setText(System.getProperty("user.home")+"/Pictures/");
                 snatcherStage.setOnCloseRequest(event -> snatcherController = null);
-            } catch (Exception e){}
+            } catch (Exception e){
+                System.out.println("\nWindowManager::snatcherWindowLoader");
+                System.out.println(e.toString());
+            }
         }
     }
     /** Opens the settings window if it's not already open
@@ -93,7 +99,10 @@ public class WindowManager {
                 settingsController.setStage(settingsStage);
                 settingsController.setWindowManager(this);
                 settingsStage.setOnCloseRequest(event -> settingsController = null);
-            } catch (Exception e){}
+            } catch (Exception e){
+                System.out.println("\nWindowManager::settingsWindowLoader");
+                System.out.println(e.toString());
+            }
         }
         settingsController.update();
     }

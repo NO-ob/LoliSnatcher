@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import org.w3c.dom.ls.LSOutput;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -91,7 +93,9 @@ public class SnatcherController extends Controller{
                             ImageIO.write(bufferedImage, item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1), imageFile);
 
                         } catch (IOException e) {
-                            throw new RuntimeException();
+                            System.out.println("SnatcherController::snatch::writer");
+                            System.out.println("\n Failed to Write File \n" + item.getFileURL().substring(item.getFileURL().lastIndexOf("/")+1) + "\n");
+                            System.out.println(e.toString());
                         }
 
                     }
