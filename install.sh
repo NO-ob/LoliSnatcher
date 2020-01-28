@@ -7,7 +7,7 @@ for I in wget unzip java awk; do
 done
 ### Check Java version ###
 JAVA_VER=$(java -version 2>&1| awk -F '"' '/version/ {print $2}')
-if [ "$(expr "$JAVA_VER" \< "11.0")" = 0 ]; then
+if [ "$(expr "$JAVA_VER" \< "11.0")" = 1 ]; then
   echo "Need at least Java 11 :(" >&2; exit 1
 fi
 LSDIR="$HOME/.loliSnatcher/"
