@@ -28,5 +28,8 @@ Tasks
     - [ ] Fix Main window layout
     - [ ] Tidy UI
     - [ ] Themes
+- [ ] Refactoring
+    - Use XML Parser instead of string functions and regex in the boorHandlers and Snatcher
+    - Make the snatcher remove offending item from the arraylist during an exception and then continue
 - [ ] Webm and Gif support
 
