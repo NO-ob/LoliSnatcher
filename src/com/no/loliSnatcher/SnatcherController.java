@@ -13,8 +13,7 @@ import org.w3c.dom.ls.LSOutput;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -33,7 +32,7 @@ public class SnatcherController extends Controller{
     Label fileName;
     @FXML
     Label progress;
-
+    int limit=20;
 
 
     @FXML
@@ -41,21 +40,15 @@ public class SnatcherController extends Controller{
         String tags = tagsField.getText();
         String dirPath = dirField.getText();
         int amount = Integer.parseInt(amountField.getText());
-        /** Append / to the end of the directory path so that it is a directory
-         * otherwise the last part of the path will be part of the file name
-         */
-        if (!dirPath.substring(dirPath.length() - 1).equals("/")){
-            dirField.appendText("/");
-            dirPath = dirField.getText();
-        }
-        // Make directory if it doesn't exist
-        File dir = new File(dirPath);
-        if (!dir.exists()){dir.mkdir();}
+
+        validateDir(dirPath);
+
+        //Sets limit to 100 if bigger than as gelbooru only allows for 100 items per page
+        if (amount <= 100){limit = amount;} else {limit = 100;}
 
         Booru selected = (Booru) booruSelector.getValue();
-        setBooruHandler(selected.getName());
-        //Sets limit to 100 if bigger than as gelbooru only allows for 100 items per page
-        if (amount <= 100){booruHandler.limit = amount;} else {booruHandler.limit = 100;}
+        setBooruHandler(selected.getName(),limit);
+
 
         ArrayList<BooruItem> fetched = null;
         progress.setText("Snatching Images");
@@ -132,9 +125,33 @@ public class SnatcherController extends Controller{
 
 
     }
-
-
     public void setTags(String tags) {
         tagsField.setText(tags);
+    }
+    @Override
+    public void updateSettings(){
+        settingsFile = new File(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf");
+        if (settingsFile.exists()){
+            String input;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf"));
+                try {
+                    while ((input = br.readLine()) != null){
+                        switch(input.split(" = ")[0]){
+                            case("Save Path"):
+                                dirField.setText(input.split(" = ")[1]);
+                                break;
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("SearchController::loadSettings \n Error reading settings \n");
+                    System.out.println(e.toString());
+                }
+            } catch (FileNotFoundException e){
+                System.out.println("SearchController::loadSettings \n settings.conf not found \n");
+                System.out.println(e.toString());
+            }
+
+        }
     }
 }

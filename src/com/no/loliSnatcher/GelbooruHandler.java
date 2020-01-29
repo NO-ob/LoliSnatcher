@@ -11,12 +11,7 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class GelbooruHandler {
-private int pageNum = 0;
-//Max images to be fetched per page
-public int limit = 20;
-// Last searched tags
-private String prevTags = "";
+public class GelbooruHandler extends BooruHandler{
 /** apiKey and userID can be found here https://gelbooru.com/index.php?page=account&s=options
  * they may be required when using the api but aren't always
  * */
@@ -25,8 +20,10 @@ public String userID = "";
     /**
      * The GelbooruHandler will fetch images and information about them from boorus running on the danbooru engine
      */
-ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
-
+    GelbooruHandler(int limit){
+        this.limit = limit;
+    }
+    @Override
     public ArrayList Search(String tags){
         String https_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=" +
                 tags.replaceAll(" ","+") + "&limit=" + limit + "&pid=" + pageNum
@@ -63,7 +60,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
      * @param conn
      * @return
      */
-    private ArrayList getItems(HttpsURLConnection conn){
+    @Override
+    protected ArrayList getItems(HttpsURLConnection conn){
         if(conn!=null){
 
             try {
@@ -86,8 +84,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-
-    private String getFileURL(String input){
+    @Override
+    protected String getFileURL(String input){
         Pattern file_url = Pattern.compile("file_url=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -95,8 +93,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-
-    private String getSampleURL(String input){
+    @Override
+    protected String getSampleURL(String input){
         Pattern file_url = Pattern.compile("sample_url=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -104,8 +102,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-
-    private String getThumbnailURL(String input){
+    @Override
+    protected String getThumbnailURL(String input){
         Pattern file_url = Pattern.compile("preview_url=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -113,8 +111,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-
-    private String getTags(String input){
+    @Override
+    protected String getTags(String input){
         Pattern file_url = Pattern.compile("tags=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -122,8 +120,8 @@ ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
         }
         return null;
     }
-
-    private String getPostURL(String input){
+    @Override
+    protected String getPostURL(String input){
         Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {

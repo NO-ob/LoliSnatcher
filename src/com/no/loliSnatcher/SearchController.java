@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class SearchController extends Controller{
@@ -23,6 +24,7 @@ public class SearchController extends Controller{
     int imgCount = 0;
     int rowNum = 0;
     int colNum = 0;
+    int limit = 20;
     String prevTags = "";
     /**
      * Fetches an arrayList of BooruItems when the search button is clicked
@@ -32,6 +34,7 @@ public class SearchController extends Controller{
     private void processSearch(ActionEvent event){
         // Resets the ScrollPane
         if (!searchField.getText().isEmpty()){
+            updateSettings();
             imageGrid.getChildren().clear();
             imagePreviews.setVvalue(0);
             // Resets the column number if the search is a new search
@@ -40,7 +43,7 @@ public class SearchController extends Controller{
             }
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
-            setBooruHandler(selected.getName());
+            setBooruHandler(selected.getName(),limit);
              fetched = booruHandler.Search(searchField.getText());
             // Displays images if the fetched list is not empty
              if (fetched.size() > 0) {
@@ -123,4 +126,41 @@ public class SearchController extends Controller{
     public void putTag(String tag){
         searchField.appendText(" "+tag);
     }
+
+    @Override
+    public void updateSettings(){
+        settingsFile = new File(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf");
+        if (settingsFile.exists()){
+            String input;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf"));
+                try {
+                    while ((input = br.readLine()) != null){
+                        //Splits line and then switches on the option name
+                        switch(input.split(" = ")[0]){
+                            case("Limit"):
+                                limit = Integer.parseInt(input.split(" = ")[1]);
+                                break;
+                            case("Default Tags"):
+                                if (searchField.getText().isEmpty()){
+                                    searchField.setText(input.split(" = ")[1]);
+                                }
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("SearchController::loadSettings \n Error reading settings \n");
+                    System.out.println(e.toString());
+                }
+            } catch (FileNotFoundException e){
+                System.out.println("SearchController::loadSettings \n settings.conf not found \n");
+                System.out.println(e.toString());
+            }
+
+        }
+    }
+
+
+
+
+
 }

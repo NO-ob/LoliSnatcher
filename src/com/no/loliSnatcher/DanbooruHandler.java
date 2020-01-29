@@ -12,19 +12,17 @@ import javax.net.ssl.HttpsURLConnection;
 /**
  * The DanbooruHandler will fetch images and information about them from boorus running on the danbooru engine
  */
-public class DanbooruHandler extends GelbooruHandler {
-    private int pageNum = 0;
-    // Max amount of images per page
-    public int limit = 20;
-    // Last searched tags
-    private String prevTags = "";
-    ArrayList<BooruItem> fetched = new ArrayList<BooruItem>();
+public class DanbooruHandler extends BooruHandler {
 
     /** This will make a connection to the url
      *
      * @param tags
      * @return
      */
+    DanbooruHandler(int limit){
+        this.limit = limit;
+    }
+    @Override
     public ArrayList Search(String tags){
         // Create a url using tags and other information
         String https_url = "https://danbooru.donmai.us/posts.xml?tags=" +
@@ -62,7 +60,8 @@ public class DanbooruHandler extends GelbooruHandler {
      * @param conn
      * @return
      */
-    private ArrayList getItems(HttpsURLConnection conn){
+    @Override
+    protected ArrayList getItems(HttpsURLConnection conn){
         if(conn!=null){
 
             try {
@@ -116,8 +115,8 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
-
-    private String getFileURL(String input){
+    @Override
+    protected String getFileURL(String input){
         Pattern file_url = Pattern.compile("<file-url>(.*?)</file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -126,8 +125,8 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
-
-    private String getSampleURL(String input){
+    @Override
+    protected String getSampleURL(String input){
         Pattern file_url = Pattern.compile("<large-file-url>(.*?)</large-file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -136,8 +135,8 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
-
-    private String getThumbnailURL(String input){
+    @Override
+    protected String getThumbnailURL(String input){
         Pattern file_url = Pattern.compile("<preview-file-url>(.*?)</preview-file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -145,8 +144,8 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
-
-    private String getTags(String input){
+    @Override
+    protected String getTags(String input){
         Pattern file_url = Pattern.compile("<tag-string>(.*?)</tag-string>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
@@ -154,8 +153,8 @@ public class DanbooruHandler extends GelbooruHandler {
         }
         return null;
     }
-
-    private String getPostURL(String input){
+    @Override
+    protected String getPostURL(String input){
         Pattern file_url = Pattern.compile("<id type=\"integer\">(.*?)</id>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {

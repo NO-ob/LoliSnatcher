@@ -74,7 +74,6 @@ public class WindowManager {
                 snatcherStage.show();
                 snatcherController.setStage(snatcherStage);
                 snatcherController.setWindowManager(this);
-                snatcherController.dirField.setText(System.getProperty("user.home")+"/Pictures/");
                 snatcherStage.setOnCloseRequest(event -> snatcherController = null);
             } catch (Exception e){
                 System.out.println("\nWindowManager::snatcherWindowLoader");
@@ -104,7 +103,7 @@ public class WindowManager {
                 System.out.println(e.toString());
             }
         }
-        settingsController.update();
+        settingsController.updateSettings();
     }
 
     public void putTag(String tag){
