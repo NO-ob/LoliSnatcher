@@ -8,13 +8,15 @@ import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class Controller {
+public abstract class Controller {
     WindowManager windowManager;
     Stage stage;
-    GelbooruHandler booruHandler;
+    BooruHandler booruHandler;
     ArrayList<BooruItem> fetched;
+    protected File settingsFile;
     @FXML
     ComboBox booruSelector;
 
@@ -27,6 +29,7 @@ public class Controller {
     public void setStage(Stage stage){
 
         this.stage = stage;
+        updateSettings();
         // Adds booru items to the ComboBox
         ObservableList<Booru> booruChoices = FXCollections.observableArrayList();
         booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico"));
@@ -57,14 +60,26 @@ public class Controller {
     /** A Function which sets a booru handler based on the booruName parsed to it
      * @param booruName
      */
-    public void setBooruHandler(String booruName){
+    public void setBooruHandler(String booruName, int limit){
         switch (booruName){
             case ("Gelbooru"):
-                 booruHandler = new GelbooruHandler();
+                booruHandler = new GelbooruHandler(limit);
                 break;
             case("Danbooru"):
-                booruHandler = new DanbooruHandler();
+                booruHandler = new DanbooruHandler(limit);
         }
 
+    }
+    abstract void updateSettings();
+
+    //private void loadSettings(){
+    public void validateDir(String path){
+        //make sure dir path is a directory and not a file
+        if (path.substring(path.length() - 1).equals("/")){
+            path += "/";
+        }
+        File dir = new File(path);
+        //Make config dir if it doesn't exist
+        if (!dir.exists()){dir.mkdir();}
     }
 }

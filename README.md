@@ -16,12 +16,12 @@ Tasks
 - [x] View Tags and Full Sized Image in a new window
 - [x] Batch download Images from gelbooru
 - [x] Add support for danbooru
-- [ ] Add settings window/manager
-    - [ ] Amount of images to fetch in one go
-    - [ ] Save location
+- [x] Add settings window/manager
+    - [x] Amount of images to fetch in one go
+    - [x] Save location
     - [ ] More boorus
     - [ ] Timeout between Snatching
-    - [ ] Default Tags
+    - [x] Default Tags
     - [ ] Amount of columns in main window
 - [ ] Design UI
     - [ ] Fix Image window layout

@@ -17,8 +17,7 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -36,13 +35,14 @@ public class ImageWindowController extends Controller{
     @FXML
     private ListView tagList;
     private BooruItem imageItem;
+    private String savePath;
     /**
      * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
      * because the GUI doesn't exist at that point
      **/
     public void setStage(Stage stage){
         this.stage = stage;
-
+        updateSettings();
         stage.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             //Listens to a change in height and then scales the image view accordingly
@@ -86,7 +86,7 @@ public class ImageWindowController extends Controller{
     @FXML
     private void saveImage(){
 
-        File imageFile = new File(System.getProperty("user.home")+"/Pictures/loliSnatcher/"+ imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1));
+        File imageFile = new File(savePath + imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1));
         BufferedImage image = SwingFXUtils.fromFXImage(fullImage.getImage(),null);
 
         try {
@@ -120,6 +120,33 @@ public class ImageWindowController extends Controller{
                 System.out.println("ImageWindowController::openImage");
                 System.out.println("\n Failed to open browser in Linux \n");
             }
+        }
+    }
+    @Override
+    public void updateSettings(){
+        settingsFile = new File(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf");
+        if (settingsFile.exists()){
+            String input;
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.home")+"/.loliSnatcher/config/settings.conf"));
+                try {
+                    while ((input = br.readLine()) != null){
+                        //Splits line and then switches on the option name
+                        switch(input.split(" = ")[0]){
+                            case("Save Path"):
+                                savePath = input.split(" = ")[1];
+                                break;
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("ImageWindowController::loadSettings \n Error reading settings \n");
+                    System.out.println(e.toString());
+                }
+            } catch (FileNotFoundException e){
+                System.out.println("ImageWindowController::loadSettings \n settings.conf not found \n");
+                System.out.println(e.toString());
+            }
+
         }
     }
 }
