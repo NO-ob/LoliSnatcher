@@ -19,17 +19,18 @@ Tasks
 - [x] Add settings window/manager
     - [x] Amount of images to fetch in one go
     - [x] Save location
-    - [ ] More boorus
+    - [x] More boorus
     - [ ] Timeout between Snatching
     - [x] Default Tags
     - [ ] Amount of columns in main window
+    - [ ] Custom File Names
 - [ ] Design UI
     - [ ] Fix Image window layout
     - [ ] Fix Main window layout
     - [ ] Tidy UI
     - [ ] Themes
 - [ ] Refactoring
-    - [ ] Use XML Parser instead of string functions and regex in the boorHandlers and Snatcher
+    - [ ] Use XML Parser instead of string functions and regex in the booruHandlers and Snatcher
     - [ ] Make the snatcher remove offending item from the arraylist during an exception and then continue
 - [ ] Webm and Gif support
 

@@ -97,7 +97,7 @@ public class WindowManager {
                 settingsStage.show();
                 settingsController.setStage(settingsStage);
                 settingsController.setWindowManager(this);
-                settingsStage.setOnCloseRequest(event -> settingsController = null);
+                settingsStage.setOnCloseRequest(event -> {settingsController = null; searchController.setBooruSelector();});
             } catch (Exception e){
                 System.out.println("\nWindowManager::settingsWindowLoader");
                 System.out.println(e.toString());

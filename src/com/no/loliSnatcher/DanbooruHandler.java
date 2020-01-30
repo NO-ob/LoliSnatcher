@@ -13,19 +13,20 @@ import javax.net.ssl.HttpsURLConnection;
  * The DanbooruHandler will fetch images and information about them from boorus running on the danbooru engine
  */
 public class DanbooruHandler extends BooruHandler {
-
+    public String baseURL;
     /** This will make a connection to the url
      *
      * @param tags
      * @return
      */
-    DanbooruHandler(int limit){
+    public DanbooruHandler(int limit, String baseURL){
         this.limit = limit;
+        this.baseURL = baseURL;
     }
     @Override
     public ArrayList Search(String tags){
         // Create a url using tags and other information
-        String https_url = "https://danbooru.donmai.us/posts.xml?tags=" +
+        String https_url =  baseURL + "/posts.xml?tags=" +
                 tags.replaceAll(" ","+") + "&limit=" + limit + "&page=" + pageNum;
 
         // Resets arraylist if new tags are searched
@@ -120,7 +121,6 @@ public class DanbooruHandler extends BooruHandler {
         Pattern file_url = Pattern.compile("<file-url>(.*?)</file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println("file url = " + matcher.group(1));
             return matcher.group(1);
         }
         return null;
@@ -130,7 +130,6 @@ public class DanbooruHandler extends BooruHandler {
         Pattern file_url = Pattern.compile("<large-file-url>(.*?)</large-file-url>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println(matcher.group(1));
             return matcher.group(1);
         }
         return null;
@@ -158,7 +157,7 @@ public class DanbooruHandler extends BooruHandler {
         Pattern file_url = Pattern.compile("<id type=\"integer\">(.*?)</id>");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            return "https://danbooru.donmai.us/posts/" + matcher.group(1);
+            return baseURL + "/posts/" + matcher.group(1);
         }
         return null;
     }

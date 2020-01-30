@@ -33,25 +33,25 @@ public class SearchController extends Controller{
     @FXML
     private void processSearch(ActionEvent event){
         // Resets the ScrollPane
-        if (!searchField.getText().isEmpty()){
             updateSettings();
             imageGrid.getChildren().clear();
             imagePreviews.setVvalue(0);
+            if (searchField.getText().isEmpty()){searchField.setText(" ");}
             // Resets the column number if the search is a new search
             if (!prevTags.equals(searchField.getText())){
                 colNum = 0;
             }
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
-            setBooruHandler(selected.getName(),limit);
-             fetched = booruHandler.Search(searchField.getText());
+            booruHandler = getBooruHandler(selected,limit);
+            fetched = booruHandler.Search(searchField.getText());
             // Displays images if the fetched list is not empty
              if (fetched.size() > 0) {
                  rowNum = 0;
                  imgCount = 0;
                  displayImagePreviews(fetched);
             }
-        }
+
 
     }
 
@@ -79,6 +79,7 @@ public class SearchController extends Controller{
             // Resets column and increments the row when 4 Image views have been put in the grid
             if (colNum > 3){rowNum++;colNum = 0;}
             // Create an ImageView smaller than 1/4 of the width of the ScrollPane
+            System.out.println(fetched.get(imgCount).getFileURL() + "\n");
             ImageView image1 = new ImageView(new Image(fetched.get(imgCount).getSampleURL(),((imagePreviews.getLayoutBounds().getWidth() / 4) *0.9),0,true,false,true));
             image1.setId("img_"+imgCount);
             // Calls the windowManager to load the Image window and parses it a booruItem when clicked
@@ -143,7 +144,10 @@ public class SearchController extends Controller{
                                 break;
                             case("Default Tags"):
                                 if (searchField.getText().isEmpty()){
-                                    searchField.setText(input.split(" = ")[1]);
+                                    if (input.split(" = ").length > 1) {
+                                        searchField.setText(input.split(" = ")[1]);
+                                    }
+
                                 }
                         }
                     }

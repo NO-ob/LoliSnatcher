@@ -47,7 +47,7 @@ public class SnatcherController extends Controller{
         if (amount <= 100){limit = amount;} else {limit = 100;}
 
         Booru selected = (Booru) booruSelector.getValue();
-        setBooruHandler(selected.getName(),limit);
+        booruHandler = getBooruHandler(selected,limit);
 
 
         ArrayList<BooruItem> fetched = null;

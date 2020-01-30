@@ -17,15 +17,17 @@ public class GelbooruHandler extends BooruHandler{
  * */
 public String apiKey = "";
 public String userID = "";
+public String baseURL;
     /**
      * The GelbooruHandler will fetch images and information about them from boorus running on the danbooru engine
      */
-    GelbooruHandler(int limit){
+    public GelbooruHandler(int limit, String baseURL){
         this.limit = limit;
+        this.baseURL = baseURL;
     }
     @Override
     public ArrayList Search(String tags){
-        String https_url = "https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=" +
+        String https_url = baseURL + "/index.php?page=dapi&s=post&q=index&tags=" +
                 tags.replaceAll(" ","+") + "&limit=" + limit + "&pid=" + pageNum
                 +"&api_key=" + apiKey + "&user_id=" + userID;
         URL url;
@@ -126,7 +128,7 @@ public String userID = "";
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             System.out.println("id = "+matcher.group(1));
-            return "https://gelbooru.com/index.php?page=post&s=view&id=" + matcher.group(1);
+            return baseURL + "/index.php?page=post&s=view&id=" + matcher.group(1);
         }
         return null;
     }
