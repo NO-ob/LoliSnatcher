@@ -30,14 +30,65 @@ public abstract class Controller {
 
         this.stage = stage;
         updateSettings();
+        setBooruSelector();
+    }
+    /** A Function which sets a booru handler based on the booruName parsed to it
+     * @param booru
+     */
+    public BooruHandler getBooruHandler(Booru booru, int limit){
+        System.out.println(booru.getType());
+        switch (booru.getType()){
+            case("Gelbooru"):
+                System.out.println(booru.getBaseURL());
+                return new GelbooruHandler(limit, booru.getBaseURL());
+            case("Danbooru"):
+                System.out.println(booru.getBaseURL());
+                return  new DanbooruHandler(limit, booru.getBaseURL());
+            case("Moebooru"):
+                System.out.println(booru.getBaseURL());
+                return new MoebooruHandler(limit, booru.getBaseURL());
+        }
+        //System.out.println("set booru "+ booru.getName()+" " + booru.getBaseURL());
+        return null;
+    }
+    abstract void updateSettings();
+
+    public void validateDir(String path){
+        //make sure dir path is a directory and not a file
+        if (path.substring(path.length() - 1).equals("/")){
+            path += "/";
+        }
+        File dir = new File(path);
+        //Make config dir if it doesn't exist
+        if (!dir.exists()){dir.mkdir();}
+    }
+
+
+    /**
+     * Adds options to the booru selector combo box, it will load them /config/*.booru if they exist
+     */
+    public void setBooruSelector(){
+        booruSelector.getItems().clear();
         // Adds booru items to the ComboBox
         ObservableList<Booru> booruChoices = FXCollections.observableArrayList();
-        booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico"));
-        booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png"));
+        booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico","Gelbooru", "https://gelbooru.com"));
+        booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png", "Danbooru", "https://danbooru.donmai.us"));
+        booruChoices.add(new Booru("Yande.re", "https://i.imgur.com/nBzBZMw.png", "Moebooru","https://yande.re"));
+
+        File dir = new File(System.getProperty("user.home")+"/.loliSnatcher/config/");
+        //get array for .booru files from config directory
+        File[] files = dir.listFiles((d, name) -> name.endsWith(".booru"));
+        if (files.length > 0){
+            for (int i = 0; i < files.length; i++){
+                booruChoices.add(new Booru(files[i]));
+            }
+        }
+
         booruSelector.getItems().addAll(booruChoices);
         // Need to specify a custom cell factory to be able to display icons and text
         booruSelector.setCellFactory(param -> new ListCell<Booru>() {
             final ImageView graphicNode = new ImageView();
+
             @Override
             public void updateItem(Booru item, boolean empty) {
 
@@ -46,7 +97,7 @@ public abstract class Controller {
                     setText(null);
                     setGraphic(null);
                     graphicNode.setImage(null);
-                }else {
+                } else {
                     setText(item.getName());
                     graphicNode.setImage(item.getFavicon());
                     setGraphic(graphicNode);
@@ -56,30 +107,6 @@ public abstract class Controller {
         booruSelector.setButtonCell((ListCell) booruSelector.getCellFactory().call(null));
         // Sets default item to first in booruChoices
         booruSelector.getSelectionModel().select(0);
-    }
-    /** A Function which sets a booru handler based on the booruName parsed to it
-     * @param booruName
-     */
-    public void setBooruHandler(String booruName, int limit){
-        switch (booruName){
-            case ("Gelbooru"):
-                booruHandler = new GelbooruHandler(limit);
-                break;
-            case("Danbooru"):
-                booruHandler = new DanbooruHandler(limit);
-        }
 
-    }
-    abstract void updateSettings();
-
-    //private void loadSettings(){
-    public void validateDir(String path){
-        //make sure dir path is a directory and not a file
-        if (path.substring(path.length() - 1).equals("/")){
-            path += "/";
-        }
-        File dir = new File(path);
-        //Make config dir if it doesn't exist
-        if (!dir.exists()){dir.mkdir();}
     }
 }

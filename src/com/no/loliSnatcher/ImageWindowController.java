@@ -60,9 +60,9 @@ public class ImageWindowController extends Controller{
         setImg();
     }
     public void setImg(){
-        fullImage.setImage(new Image(imageItem.getFileURL()));
-        fullImage.setFitWidth(stage.getHeight()*0.8);
+        fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,true));
         fullImage.setPreserveRatio(true);
+        fullImage.setFitHeight(stage.getHeight()*0.8);
 
     }
     public void setTags(){
