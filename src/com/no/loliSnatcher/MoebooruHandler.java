@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MoebooruHandler extends GelbooruHandler {
-
+    int pageNum = 1;
     /**
      * The GelbooruHandler will fetch images and information about them from boorus running on the danbooru engine
      *
@@ -28,7 +28,7 @@ public class MoebooruHandler extends GelbooruHandler {
         if(!prevTags.equals(tags)){
             System.out.println("Reset Search!");
             fetched = new ArrayList<BooruItem>();
-            pageNum = 0;
+            pageNum = 1;
         }
         prevTags = tags;
         try {
