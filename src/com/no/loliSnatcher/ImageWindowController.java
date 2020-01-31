@@ -43,16 +43,7 @@ public class ImageWindowController extends Controller{
     public void setStage(Stage stage){
         this.stage = stage;
         updateSettings();
-        stage.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            //Listens to a change in height and then scales the image view accordingly
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                System.out.println(number);
-                if ((double)t1 > 0) {
-                    fullImage.setFitHeight(((double) number) * 0.8);
-                }
-            }
-        });
+
     }
     public void setItem(BooruItem item) {
         imageItem = item;
@@ -68,7 +59,35 @@ public class ImageWindowController extends Controller{
             fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,false));
         }
         fullImage.setPreserveRatio(true);
-        fullImage.setFitHeight(stage.getHeight()*0.8);
+
+        //Set image fit to height or fit to width depending on which value is bigger in that image
+        if (imageItem.getHeight() > imageItem.getWidth()){
+            //0.9 is used for height as there are buttons and a listview underneath the image
+            fullImage.setFitHeight(stage.getHeight()*0.9);
+            stage.heightProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                //Listens to a change in height and then scales the image view accordingly
+                public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                    System.out.println(number);
+                    if ((double)t1 > 0) {
+                        fullImage.setFitHeight(((double) number) * 0.9);
+                    }
+                }
+            });
+        } else {
+            fullImage.setFitWidth(stage.getWidth());
+            stage.widthProperty().addListener(new ChangeListener<Number>() {
+                @Override
+                //Listens to a change in width and then scales the image view accordingly
+                public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                    System.out.println(number);
+                    if ((double)t1 > 0) {
+                        fullImage.setFitWidth(((double) number));
+                    }
+                }
+            });
+        }
+
 
     }
     public void setTags(){

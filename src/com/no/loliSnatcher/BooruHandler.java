@@ -21,5 +21,7 @@ public abstract class BooruHandler {
     abstract protected String getThumbnailURL(String input);
     abstract protected String getTags(String input);
     abstract protected String getPostURL(String input);
+    abstract protected int getHeight(String input);
+    abstract protected int getWidth(String input);
 
 }

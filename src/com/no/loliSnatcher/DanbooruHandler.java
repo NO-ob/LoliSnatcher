@@ -14,15 +14,16 @@ import javax.net.ssl.HttpsURLConnection;
  */
 public class DanbooruHandler extends BooruHandler {
     public String baseURL;
+
+    public DanbooruHandler(int limit, String baseURL){
+        this.limit = limit;
+        this.baseURL = baseURL;
+    }
     /** This will make a connection to the url
      *
      * @param tags
      * @return
      */
-    public DanbooruHandler(int limit, String baseURL){
-        this.limit = limit;
-        this.baseURL = baseURL;
-    }
     @Override
     public ArrayList Search(String tags){
         // Create a url using tags and other information
@@ -74,6 +75,8 @@ public class DanbooruHandler extends BooruHandler {
                 String sampleURL=null;
                 String thumbnailURL=null;
                 String tagList=null;
+                int height=0;
+                int width=0;
                 while ((input = br.readLine()) != null){
                     if (input.contains("<id")) {
                         postURL = getPostURL(input);
@@ -85,23 +88,32 @@ public class DanbooruHandler extends BooruHandler {
                         fileURL = getFileURL(input);
                     }else if (input.contains("<preview-file-url")){
                         thumbnailURL = getThumbnailURL(input);
+                    }else if (input.contains("<image-height")) {
+                        height = getHeight(input);
+                    }else if (input.contains("<image-width")) {
+                        width = getWidth(input);
 
-                     //null values if at the end of current post since Danbooru doesn't provide urls for all posts
+                        //null values if at the end of current post since Danbooru doesn't provide urls for all posts
                     }else if (input.contains("</post>")){
                         postURL=null;
                         tagList=null;
                         sampleURL=null;
                         fileURL=null;
                         thumbnailURL=null;
+                        height=0;
+                        width=0;
                     }
                     // Create BooruItem if all fields have been found
-                    if(!(postURL == null)&&!(fileURL == null)&&!(tagList == null)&&!(thumbnailURL == null)&&!(sampleURL == null)) {
-                        fetched.add(new BooruItem(fileURL, sampleURL, thumbnailURL, tagList, postURL));
+                    if(!(postURL == null)&&!(fileURL == null)&&!(tagList == null)&&!(thumbnailURL == null)&&!(sampleURL == null) && !(height == 0) &&
+                    !(width == 0)) {
+                        fetched.add(new BooruItem(fileURL, sampleURL, thumbnailURL, tagList, postURL, height,width));
                         postURL=null;
                         tagList=null;
                         sampleURL=null;
                         fileURL=null;
                         thumbnailURL=null;
+                        height=0;
+                        width=0;
                     }
                 }
                 br.close();
@@ -160,6 +172,26 @@ public class DanbooruHandler extends BooruHandler {
             return baseURL + "/posts/" + matcher.group(1);
         }
         return null;
+    }
+    @Override
+    protected int getHeight(String input){
+        Pattern file_url = Pattern.compile("<image-height type=\"integer\">(.*?)</image-height>");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            System.out.println("Height = "+matcher.group(1));
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
+    }
+    @Override
+    protected int getWidth(String input){
+        Pattern file_url = Pattern.compile("<image-width type=\"integer\">(.*?)</image-width>");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            System.out.println("width = "+matcher.group(1));
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
     }
 
 }

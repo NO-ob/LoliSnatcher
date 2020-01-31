@@ -12,12 +12,16 @@ public class BooruItem {
     private String thumbnailURL;
     private String tags;
     private String postURL;
-    public BooruItem(String fileURL, String sampleURL,String thumbnailURL, String tags,String postURL){
+    private int width;
+    private int height;
+    public BooruItem(String fileURL, String sampleURL,String thumbnailURL, String tags,String postURL, int height, int width){
         this.fileURL = fileURL;
         this.sampleURL = sampleURL;
         this.thumbnailURL = thumbnailURL;
         this.tags = tags;
         this.postURL = postURL;
+        this.height = height;
+        this.width = width;
     }
 
     public String getFileURL() {
@@ -38,5 +42,13 @@ public class BooruItem {
 
     public String getThumbnailURL() {
         return thumbnailURL;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
     }
 }
