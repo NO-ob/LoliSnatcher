@@ -72,7 +72,7 @@ public String baseURL;
                while ((input = br.readLine()) != null){
                    // Creates a new booruItem if the current line is a post
                     if (input.contains("<post ")) {
-                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostURL(input)));
+                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostURL(input),getHeight(input),getWidth(input)));
                     }
                 }
                 br.close();
@@ -127,10 +127,29 @@ public String baseURL;
         Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
-            System.out.println("id = "+matcher.group(1));
             return baseURL + "/index.php?page=post&s=view&id=" + matcher.group(1);
         }
         return null;
+    }
+    @Override
+    protected int getHeight(String input){
+        Pattern file_url = Pattern.compile(" height=\\\"(.*?)\\\"");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            System.out.println("Height = "+matcher.group(1));
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
+    }
+    @Override
+    protected int getWidth(String input){
+        Pattern file_url = Pattern.compile(" width=\\\"(.*?)\\\"");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            System.out.println("width = "+matcher.group(1));
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
     }
 
 }
