@@ -26,6 +26,7 @@ public class SearchController extends Controller{
     int colNum = 0;
     int limit = 20;
     String prevTags = "";
+    String prevBooru = "";
     /**
      * Fetches an arrayList of BooruItems when the search button is clicked
      * @param event
@@ -37,14 +38,18 @@ public class SearchController extends Controller{
             imageGrid.getChildren().clear();
             imagePreviews.setVvalue(0);
             if (searchField.getText().isEmpty()){searchField.setText(" ");}
-            // Resets the column number if the search is a new search
-            if (!prevTags.equals(searchField.getText())){
-                colNum = 0;
-            }
+
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
             booruHandler = getBooruHandler(selected,limit);
+            // Resets the column number if the search is a new search
+            if (!prevTags.equals(searchField.getText()) || !selected.getName().equals(prevBooru)){
+                colNum = 0;
+            }
             fetched = booruHandler.Search(searchField.getText());
+            prevTags = searchField.getText();
+            prevBooru = selected.getName();
+
             // Displays images if the fetched list is not empty
              if (fetched.size() > 0) {
                  rowNum = 0;
@@ -103,7 +108,6 @@ public class SearchController extends Controller{
         // Adds a listener to the ScrollPane so that when the bottom is reached more images can be loaded
         imagePreviews.vvalueProperty().addListener(
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                    System.out.println(oldValue.intValue() + " " +newValue.intValue());
                     if(newValue.intValue() == 1 && oldValue.intValue()!= 1){
                         scrollLoad();
 

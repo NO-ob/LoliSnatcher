@@ -60,7 +60,13 @@ public class ImageWindowController extends Controller{
         setImg();
     }
     public void setImg(){
-        fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,true));
+
+        // Load image in background if it is absurdres as the UI freezes while they are loading
+        if(imageItem.getTags().contains("absurdres")){
+            fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,true));
+        } else {
+            fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,false));
+        }
         fullImage.setPreserveRatio(true);
         fullImage.setFitHeight(stage.getHeight()*0.8);
 
