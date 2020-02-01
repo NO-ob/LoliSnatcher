@@ -20,7 +20,7 @@ public class BooruItem {
         this.sampleURL = sampleURL;
         this.thumbnailURL = thumbnailURL;
         //Sometimes tags begin with a space and it messes up file saving so we remove it if it exists
-        if (tags.substring(0,1).equals(" ")){
+        if (tags.charAt(0) == ' '){
             this.tags=tags.substring(1);
         } else {
             this.tags = tags;

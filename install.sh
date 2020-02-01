@@ -19,13 +19,22 @@ if [ ! -d "$LSDIR/javafx-sdk-11.0.2" ]; then
 	rm openjfx-11.0.2_linux-x64_bin-sdk.zip
 fi
 PATH_TO_FX="$LSDIR"javafx-sdk-11.0.2/lib
+
+### Check for config Directory ###
+if [ ! -d "$LSDIR/config" ]; then
+	mkdir "$LSDIR/config"
+fi
 ### Get Program ###
 rm "$LSDIR"LoliSnatcher.jar
-wget https://github.com/NO-ob/LoliSnatcher/releases/download/v1.1/LoliSnatcher.jar -P "$LSDIR"
+wget https://github.com/NO-ob/LoliSnatcher/releases/download/1.2/LoliSnatcher.jar -P "$LSDIR"
 ### Get Icon ###
 if [ ! -f "$LSDIR/icon.png" ]; then
 	wget https://github.com/NO-ob/LoliSnatcher/releases/download/v1.0/icon.png -P "$LSDIR"
 fi
+### Get booru configs files ###
+wget https://github.com/NO-ob/LoliSnatcher/releases/download/1.2/booru.zip
+unzip booru.zip -d "$LSDIR"/config
+rm booru.zip
 ### Create desktop file ###
 cat << EOF > ~/.local/share/applications/loliSnatcher.desktop
 [Desktop Entry]

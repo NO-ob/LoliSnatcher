@@ -1,11 +1,16 @@
 # Loli Snatcher 
 [![github-small](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](https://www.gnu.org/licenses/gpl-3.0)
 
-A Program To Search  and Snatch Images From Boorus
+A Program To Search and Snatch Images From Boorus
 
-When searching enter tags on one line seperated with spaces
+When running for the first time open the settings window and press save to save the default settings to a file.
 
-Images from the image window will be saved to ~/Pictures 
+File Name Variables
+$SEARCH[n] - Will take n variables from the search tags
+$TAGS[n] - Will take n tags from the fetched image
+$ID - Post id
+$HASH - File hash
+$EXT - File extension
 
 ![github-small](https://i.imgur.com/s0gX1N0.png)
 
@@ -20,10 +25,9 @@ Tasks
     - [x] Amount of images to fetch in one go
     - [x] Save location
     - [x] More boorus
-    - [ ] Timeout between Snatching
+    - [x] Timeout between Snatching
     - [x] Default Tags
-    - [ ] Amount of columns in main window
-    - [ ] Custom File Names
+    - [x] Custom File Names
 - [ ] Design UI
     - [ ] Fix Image window layout
     - [ ] Fix Main window layout
