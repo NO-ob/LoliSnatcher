@@ -43,5 +43,5 @@ StartupWMClass=com.no.loliSnatcher.Main
 Exec=env java -jar --module-path "$PATH_TO_FX" --add-modules javafx.controls,javafx.fxml,javafx.swing "$LSDIR/LoliSnatcher.jar"
 Icon=$LSDIR/icon.png
 Type=Application
-Categories=Grpahics
+Categories=Graphics
 EOF
