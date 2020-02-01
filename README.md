@@ -6,11 +6,11 @@ A Program To Search and Snatch Images From Boorus
 When running for the first time open the settings window and press save to save the default settings to a file.
 
 File Name Variables
-$SEARCH[n] - Will take n variables from the search tags
-$TAGS[n] - Will take n tags from the fetched image
-$ID - Post id
-$HASH - File hash
-$EXT - File extension
+ - $SEARCH[n] - Will take n variables from the search tags
+ - $TAGS[n] - Will take n tags from the fetched image
+ - $ID - Post id
+ - $HASH - File hash
+ - $EXT - File extension
 
 ![github-small](https://i.imgur.com/580umw6.png)
 
