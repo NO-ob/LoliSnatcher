@@ -33,16 +33,17 @@ public class WindowManager {
     /** Opens an image window if it's not already open, if it is it will just parse it a new item
      *
      * @param booruItem
+     * @param text
      * @throws Exception
      */
-    public void imageWindowLoader(BooruItem booruItem) throws Exception {
+    public void imageWindowLoader(BooruItem booruItem, String searchTags) throws Exception {
         if (imageController == null){
             try {
             Stage ImageStage = new Stage();
             FXMLLoader imageLoader = new FXMLLoader(getClass().getResource("ImageWindow.fxml"));
             Parent root = imageLoader.load();
             imageController = imageLoader.getController();
-            ImageStage.setTitle("Img");
+            ImageStage.setTitle("Image");
             ImageStage.setScene(new Scene(root));
             ImageStage.show();
             imageController.setStage(ImageStage);
@@ -53,7 +54,7 @@ public class WindowManager {
                 System.out.println(e.toString());
             }
         }
-        imageController.setItem(booruItem);
+        imageController.setItem(booruItem,searchTags);
 
     }
     /** Open the snatcher window if it's not already open, if it is it will just pass it a new item

@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Controller for the Snatcher window this is what handles the batch downloading [Snatching]
@@ -29,7 +30,9 @@ public class SnatcherController extends Controller{
     @FXML
     TextField amountField;
     @FXML
-    Label fileName;
+    TextField fileNameField,sleepField;
+    @FXML
+    Label fileNameLabel;
     @FXML
     Label progress;
     int limit=20;
@@ -39,6 +42,9 @@ public class SnatcherController extends Controller{
     public void snatch(){
         String tags = tagsField.getText();
         String dirPath = dirField.getText();
+        String fileName = fileNameField.getText();
+        String searchTags = tagsField.getText();
+        long timeout = Long.parseLong(sleepField.getText());
         int amount = Integer.parseInt(amountField.getText());
 
         validateDir(dirPath);
@@ -66,6 +72,8 @@ public class SnatcherController extends Controller{
             @Override public Void call() {
                 for (int i = 0; i < finalFetched.size(); i++){
                     BooruItem item = finalFetched.get(i);
+                    //Updates the task progress
+                    updateProgress(i, finalFetched.size());
                     // Skips item if it is webm or gif as the javafx image objects cant display them
                     if (item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("webm") || item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("gif")) {
                         System.out.println("skipped: " + item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
@@ -73,28 +81,23 @@ public class SnatcherController extends Controller{
                         // Updates the title of the task with the image url
                         updateTitle(item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
                         // Creates a new image from the URL of the current booruitem
-                        Image image;
-                        image = new Image(item.getFileURL());
+                        Image image = new Image(item.getFileURL());
                         System.out.println(image.getUrl());
                         while (image.getProgress() != 1){
                             System.out.println("waiting");
                         }
-                        //Writes current Image to new file
-                        File imageFile = new File(dirField.getText() + item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
-                        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                        try {
-                            ImageIO.write(bufferedImage, item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1), imageFile);
-
-                        } catch (IOException e) {
-                            System.out.println("SnatcherController::snatch::writer");
-                            System.out.println("\n Failed to Write File \n" + item.getFileURL().substring(item.getFileURL().lastIndexOf("/")+1) + "\n");
-                            System.out.println(e.toString());
-                        }
-
+                        ImageWriter imageWriter = new ImageWriter();
+                        imageWriter.writeImage(imageWriter.makeFile(dirPath,fileName,item,searchTags),image);
                     }
-                    //Updates the task progress
-                    updateProgress(i, finalFetched.size());
+                    try {
+                        updateTitle("(∪｡∪)｡｡｡zzz");
+                        Thread.sleep(timeout);
+                    }
+                    catch(InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
+                updateTitle("Snatching Complete ＼(^ o ^)／");
                 return null;
             }
 
@@ -103,8 +106,9 @@ public class SnatcherController extends Controller{
         // Displays progress and filename in the window
         ProgressBar bar = new ProgressBar();
         bar.progressProperty().bind(writer.progressProperty());
-        fileName.textProperty().bind(writer.titleProperty());
-        main.add(bar,1,7);
+        fileNameLabel.textProperty().bind(writer.titleProperty());
+        bar.prefWidthProperty().bind(main.widthProperty().multiply(0.7));
+        main.add(bar,0,11,2,1);
         /** Remove progress bar when task has finished as a progress bar
          * makes the PC lock up when it is not being updated
          */
@@ -140,6 +144,12 @@ public class SnatcherController extends Controller{
                         switch(input.split(" = ")[0]){
                             case("Save Path"):
                                 dirField.setText(input.split(" = ")[1]);
+                                break;
+                            case("File Name"):
+                                fileNameField.setText(input.split(" = ")[1]);
+                                break;
+                            case("Sleep Time"):
+                                sleepField.setText(input.split(" = ")[1]);
                                 break;
                         }
                     }

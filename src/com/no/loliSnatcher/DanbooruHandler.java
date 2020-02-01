@@ -75,11 +75,14 @@ public class DanbooruHandler extends BooruHandler {
                 String sampleURL=null;
                 String thumbnailURL=null;
                 String tagList=null;
+                int id=0;
                 int height=0;
                 int width=0;
                 while ((input = br.readLine()) != null){
                     if (input.contains("<id")) {
+                        id = getID(input);
                         postURL = getPostURL(input);
+
                     }else if (input.contains("<tag-string>")){
                         tagList = getTags(input);
                     }else if (input.contains("<large-file-url")){
@@ -102,11 +105,12 @@ public class DanbooruHandler extends BooruHandler {
                         thumbnailURL=null;
                         height=0;
                         width=0;
+                        id=0;
                     }
                     // Create BooruItem if all fields have been found
                     if(!(postURL == null)&&!(fileURL == null)&&!(tagList == null)&&!(thumbnailURL == null)&&!(sampleURL == null) && !(height == 0) &&
-                    !(width == 0)) {
-                        fetched.add(new BooruItem(fileURL, sampleURL, thumbnailURL, tagList, postURL, height,width));
+                    !(width == 0)&& !(id == 0)) {
+                        fetched.add(new BooruItem(fileURL, sampleURL, thumbnailURL, tagList, postURL, height,width,id));
                         postURL=null;
                         tagList=null;
                         sampleURL=null;
@@ -172,6 +176,15 @@ public class DanbooruHandler extends BooruHandler {
             return baseURL + "/posts/" + matcher.group(1);
         }
         return null;
+    }
+    //@Override
+    protected int getID(String input){
+        Pattern file_url = Pattern.compile("<id type=\"integer\">(.*?)</id>");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
     }
     @Override
     protected int getHeight(String input){
