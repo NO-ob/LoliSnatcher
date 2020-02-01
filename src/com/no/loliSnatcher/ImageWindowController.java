@@ -36,6 +36,8 @@ public class ImageWindowController extends Controller{
     private ListView tagList;
     private BooruItem imageItem;
     private String savePath;
+    private String fileName;
+    private String searchTags;
     /**
      * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
      * because the GUI doesn't exist at that point
@@ -45,8 +47,9 @@ public class ImageWindowController extends Controller{
         updateSettings();
 
     }
-    public void setItem(BooruItem item) {
-        imageItem = item;
+    public void setItem(BooruItem imageItem,String searchTags) {
+        this.imageItem = imageItem;
+        this.searchTags = searchTags;
         setTags();
         setImg();
     }
@@ -63,29 +66,9 @@ public class ImageWindowController extends Controller{
         //Set image fit to height or fit to width depending on which value is bigger in that image
         if (imageItem.getHeight() > imageItem.getWidth()){
             //0.9 is used for height as there are buttons and a listview underneath the image
-            fullImage.setFitHeight(stage.getHeight()*0.9);
-            stage.heightProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                //Listens to a change in height and then scales the image view accordingly
-                public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                    System.out.println(number);
-                    if ((double)t1 > 0) {
-                        fullImage.setFitHeight(((double) number) * 0.9);
-                    }
-                }
-            });
+            fullImage.fitHeightProperty().bind(stage.heightProperty().multiply(0.85));
         } else {
-            fullImage.setFitWidth(stage.getWidth());
-            stage.widthProperty().addListener(new ChangeListener<Number>() {
-                @Override
-                //Listens to a change in width and then scales the image view accordingly
-                public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                    System.out.println(number);
-                    if ((double)t1 > 0) {
-                        fullImage.setFitWidth(((double) number));
-                    }
-                }
-            });
+            fullImage.fitWidthProperty().bind(stage.widthProperty());
         }
 
 
@@ -110,17 +93,9 @@ public class ImageWindowController extends Controller{
      */
     @FXML
     private void saveImage(){
-
-        File imageFile = new File(savePath + imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1));
-        BufferedImage image = SwingFXUtils.fromFXImage(fullImage.getImage(),null);
-
-        try {
-            ImageIO.write(image, imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf(".")+1),imageFile);
-
-        } catch (IOException e){
-            System.out.println("ImageWindowController::saveImage");
-            System.out.println("\n Failed to Write File \n" + imageItem.getFileURL().substring(imageItem.getFileURL().lastIndexOf("/")+1) + "\n");
-        }
+        ImageWriter writerClass = new ImageWriter();
+        writerClass.writeImage(writerClass.makeFile(savePath,fileName, imageItem,searchTags),fullImage.getImage());
+        writerClass = null;
     }
 
     /** Opens the post url in the default web browser
@@ -160,6 +135,9 @@ public class ImageWindowController extends Controller{
                         switch(input.split(" = ")[0]){
                             case("Save Path"):
                                 savePath = input.split(" = ")[1];
+                                break;
+                            case("File Name"):
+                                fileName = input.split(" = ")[1];
                                 break;
                         }
                     }

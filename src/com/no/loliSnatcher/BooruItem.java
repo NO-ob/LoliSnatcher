@@ -12,16 +12,24 @@ public class BooruItem {
     private String thumbnailURL;
     private String tags;
     private String postURL;
+    private int id;
     private int width;
     private int height;
-    public BooruItem(String fileURL, String sampleURL,String thumbnailURL, String tags,String postURL, int height, int width){
+    public BooruItem(String fileURL, String sampleURL,String thumbnailURL, String tags,String postURL, int height, int width,int id){
         this.fileURL = fileURL;
         this.sampleURL = sampleURL;
         this.thumbnailURL = thumbnailURL;
-        this.tags = tags;
+        //Sometimes tags begin with a space and it messes up file saving so we remove it if it exists
+        if (tags.substring(0,1).equals(" ")){
+            this.tags=tags.substring(1);
+        } else {
+            this.tags = tags;
+        }
+
         this.postURL = postURL;
         this.height = height;
         this.width = width;
+        this.id = id;
     }
 
     public String getFileURL() {
@@ -50,5 +58,9 @@ public class BooruItem {
 
     public int getWidth() {
         return width;
+    }
+
+    public int getId() {
+        return id;
     }
 }

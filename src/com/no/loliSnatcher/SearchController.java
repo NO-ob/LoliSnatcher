@@ -92,7 +92,7 @@ public class SearchController extends Controller{
                                          @Override public void handle(MouseEvent event) {
                                              try {
                                                  String id = event.getSource().toString().split(",")[0].substring(17);
-                                                 windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)));
+                                                 windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)),searchField.getText());
                                              } catch (Exception e) {
                                                  System.out.println("SearchController::displayImagePreviews::setOnMouseClicked");
                                                  System.out.println(e.toString());

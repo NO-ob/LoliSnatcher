@@ -72,7 +72,7 @@ public String baseURL;
                while ((input = br.readLine()) != null){
                    // Creates a new booruItem if the current line is a post
                     if (input.contains("<post ")) {
-                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostURL(input),getHeight(input),getWidth(input)));
+                        fetched.add(new BooruItem(getFileURL(input),getSampleURL(input),getThumbnailURL(input),getTags(input),getPostURL(input),getHeight(input),getWidth(input),getID(input)));
                     }
                 }
                 br.close();
@@ -130,6 +130,15 @@ public String baseURL;
             return baseURL + "/index.php?page=post&s=view&id=" + matcher.group(1);
         }
         return null;
+    }
+    //@Override
+    protected int getID(String input){
+        Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
+        Matcher matcher = file_url.matcher(input);
+        while(matcher.find()) {
+            return Integer.parseInt(matcher.group(1));
+        }
+        return 0;
     }
     @Override
     protected int getHeight(String input){

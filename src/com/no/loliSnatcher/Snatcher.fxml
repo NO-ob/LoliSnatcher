@@ -17,19 +17,23 @@
                                maxWidth="Infinity" halignment="CENTER">
             </ColumnConstraints>
         </columnConstraints>
-        <Label text="Image Amount"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="amountField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-        <Label text="Directory"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label text="Image Amount"  GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="amountField" text="20" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label text="Directory"  GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="dirField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label text="Tags" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <TextField fx:id="tagsField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <Label text="API Key" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <TextField fx:id="apiKeyField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-        <Label text="User ID" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-        <Label text="Booru" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <ComboBox prefHeight="40" fx:id="booruSelector" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        <Button text="Snatch"  onAction="#snatch" fx:id="snatchButton" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-        <Label fx:id="progress" text="Progress" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-        <Label fx:id="fileName" text="" GridPane.rowIndex="8" GridPane.columnSpan="2"/>
+        <Label text="File Name"  GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Tags" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="tagsField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="API Key" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="apiKeyField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <Label text="User ID" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <TextField fx:id="userIDField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Label text="Booru" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <ComboBox prefHeight="40" fx:id="booruSelector" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        <Label text="Sleep (MS)" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <TextField fx:id="sleepField" text="250" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        <Button text="Snatch"  onAction="#snatch" fx:id="snatchButton" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+        <Label fx:id="progress" text="Progress" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <Label fx:id="fileNameLabel" text=""  GridPane.columnSpan="2" GridPane.rowIndex="10"/>
 </GridPane>
