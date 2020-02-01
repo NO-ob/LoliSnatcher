@@ -12,7 +12,7 @@ $ID - Post id
 $HASH - File hash
 $EXT - File extension
 
-![github-small](https://i.imgur.com/s0gX1N0.png)
+![github-small](https://i.imgur.com/580umw6.png)
 
 Tasks
 - [x] Search and retrieve data from gelbooru
