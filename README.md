@@ -28,6 +28,7 @@ Tasks
     - [x] Timeout between Snatching
     - [x] Default Tags
     - [x] Custom File Names
+- [ ] Fix bug which causes images to load infinitely until system crashes
 - [ ] Design UI
     - [ ] Fix Image window layout
     - [ ] Fix Main window layout
