@@ -88,7 +88,7 @@ public String baseURL;
     }
     @Override
     protected String getFileURL(String input){
-        Pattern file_url = Pattern.compile("file_url=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile("file_url=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return matcher.group(1);
@@ -97,7 +97,7 @@ public String baseURL;
     }
     @Override
     protected String getSampleURL(String input){
-        Pattern file_url = Pattern.compile("sample_url=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile("sample_url=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return matcher.group(1);
@@ -106,7 +106,7 @@ public String baseURL;
     }
     @Override
     protected String getThumbnailURL(String input){
-        Pattern file_url = Pattern.compile("preview_url=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile("preview_url=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return matcher.group(1);
@@ -115,16 +115,18 @@ public String baseURL;
     }
     @Override
     protected String getTags(String input){
-        Pattern file_url = Pattern.compile("tags=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile("tags=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
+
         while(matcher.find()) {
+            System.out.println(matcher.group(1));
             return matcher.group(1);
         }
-        return null;
+        return "no tags";
     }
     @Override
     protected String getPostURL(String input){
-        Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile(" id=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return baseURL + "/index.php?page=post&s=view&id=" + matcher.group(1);
@@ -133,7 +135,7 @@ public String baseURL;
     }
     //@Override
     protected int getID(String input){
-        Pattern file_url = Pattern.compile(" id=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile(" id=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             return Integer.parseInt(matcher.group(1));
@@ -142,7 +144,7 @@ public String baseURL;
     }
     @Override
     protected int getHeight(String input){
-        Pattern file_url = Pattern.compile(" height=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile(" height=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             System.out.println("Height = "+matcher.group(1));
@@ -152,7 +154,7 @@ public String baseURL;
     }
     @Override
     protected int getWidth(String input){
-        Pattern file_url = Pattern.compile(" width=\\\"(.*?)\\\"");
+        Pattern file_url = Pattern.compile(" width=\"(.*?)\"");
         Matcher matcher = file_url.matcher(input);
         while(matcher.find()) {
             System.out.println("width = "+matcher.group(1));
