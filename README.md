@@ -28,7 +28,7 @@ Tasks
     - [x] Timeout between Snatching
     - [x] Default Tags
     - [x] Custom File Names
-- [ ] Fix bug which causes images to load infinitely until system crashes
+- [x] Fix bug which causes images to load infinitely until system crashes
 - [ ] Design UI
     - [ ] Fix Image window layout
     - [ ] Fix Main window layout
@@ -38,5 +38,5 @@ Tasks
 - [ ] Refactoring
     - [ ] Use XML Parser instead of string functions and regex in the booruHandlers and Snatcher
     - [ ] Make the snatcher remove offending item from the arraylist during an exception and then continue
-- [ ] Webm and Gif support
-
+- [x] Webm and Gif support
+        - gif viewing implemented, webm viewing will never work as javafx only supports mp4 and flv so webm is opened in MPV

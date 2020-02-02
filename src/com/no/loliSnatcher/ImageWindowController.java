@@ -1,10 +1,7 @@
 package com.no.loliSnatcher;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -13,10 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
-import javax.imageio.ImageIO;
+
+import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,23 +53,32 @@ public class ImageWindowController extends Controller{
     }
     public void setImg(){
 
+        fullImage.setImage(null);
         // Load image in background if it is absurdres as the UI freezes while they are loading
-        if(imageItem.getTags().contains("absurdres")){
-            fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,true));
+        System.out.println((Runtime.getRuntime().totalMemory()) / 1024 / 1204 + " MB");
+        if (imageItem.getExt().equals("webm")){
+            try {
+                Runtime.getRuntime().exec("mpv "+imageItem.getFileURL());
+            } catch(IOException e){
+
+            }
         } else {
-            fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,false));
+            if(imageItem.getTags().contains("absurdres")){
+                fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,true));
+            } else {
+                fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,false));
+            }
+            fullImage.setPreserveRatio(true);
+
+            //Set image fit to height or fit to width depending on which value is bigger in that image
+            if (imageItem.getHeight() > imageItem.getWidth()){
+                //0.9 is used for height as there are buttons and a listview underneath the image
+                fullImage.fitHeightProperty().bind(stage.heightProperty().multiply(0.85));
+            } else {
+                fullImage.fitWidthProperty().bind(stage.widthProperty());
+            }
+            System.out.println((Runtime.getRuntime().totalMemory()) / 1024 / 1204 + " MB");
         }
-        fullImage.setPreserveRatio(true);
-
-        //Set image fit to height or fit to width depending on which value is bigger in that image
-        if (imageItem.getHeight() > imageItem.getWidth()){
-            //0.9 is used for height as there are buttons and a listview underneath the image
-            fullImage.fitHeightProperty().bind(stage.heightProperty().multiply(0.85));
-        } else {
-            fullImage.fitWidthProperty().bind(stage.widthProperty());
-        }
-
-
     }
     public void setTags(){
         ObservableList<String> splitTags = FXCollections.observableArrayList(imageItem.getTags().split(" "));

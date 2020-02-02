@@ -63,4 +63,7 @@ public class BooruItem {
     public int getId() {
         return id;
     }
+    public String getExt(){
+        return fileURL.substring(fileURL.lastIndexOf(".") + 1);
+    }
 }
