@@ -1,5 +1,6 @@
 package com.no.loliSnatcher;
 
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,9 +9,18 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.io.*;
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 
 public class SearchController extends Controller{
@@ -19,12 +29,15 @@ public class SearchController extends Controller{
     @FXML
     private ScrollPane imagePreviews;
     @FXML
-    private GridPane imageGrid;
+    private FlowPane imageGrid;
 
     int imgCount = 0;
+    int imgLoaded = 0;
     int rowNum = 0;
     int colNum = 0;
     int limit = 20;
+    int colMax = 4;
+    boolean imageThumbnails = true;
     String prevTags = "";
     String prevBooru = "";
     /**
@@ -42,10 +55,7 @@ public class SearchController extends Controller{
             //Gets Booru selected in the ComboBox
             Booru selected = (Booru) booruSelector.getValue();
             booruHandler = getBooruHandler(selected,limit);
-            // Resets the column number if the search is a new search
-            if (!prevTags.equals(searchField.getText()) || !selected.getName().equals(prevBooru)){
-                colNum = 0;
-            }
+
             fetched = booruHandler.Search(searchField.getText());
             prevTags = searchField.getText();
             prevBooru = selected.getName();
@@ -54,17 +64,16 @@ public class SearchController extends Controller{
              if (fetched.size() > 0) {
                  rowNum = 0;
                  imgCount = 0;
+                 imgLoaded = 0;
+                 colNum = 0;
                  displayImagePreviews(fetched);
             }
 
 
     }
-
     public ArrayList<BooruItem> getNextPage(String tags){
         return booruHandler.Search(tags);
     }
-
-
 
     /**
      * Gets the next page of Images
@@ -79,19 +88,44 @@ public class SearchController extends Controller{
      * @param fetched
      **/
     private void displayImagePreviews(ArrayList<BooruItem> fetched){
-
         while (imgCount < fetched.size()){
             // Resets column and increments the row when 4 Image views have been put in the grid
-            if (colNum > 3){rowNum++;colNum = 0;}
-            // Create an ImageView smaller than 1/4 of the width of the ScrollPane
-            System.out.println(fetched.get(imgCount).getFileURL() + "\n");
-            ImageView image1 = new ImageView(new Image(fetched.get(imgCount).getSampleURL(),((imagePreviews.getLayoutBounds().getWidth() / 4) *0.9),0,true,false,true));
-            image1.setId("img_"+imgCount);
+            if (colNum > colMax){rowNum++;colNum = 0;}
+
+            ImageView imageView = null;
+            Image image = null;
+            //Load thumbnails if thumbnail setting is enabled or image is gif/webm
+            if (imageThumbnails || fetched.get(imgCount).getExt().equals("gif") || fetched.get(imgCount).getExt().equals("webm")){
+                image = new Image(fetched.get(imgCount).getThumbnailURL(),0,0,true,false,true);
+            } else {
+                if(colMax < 4){
+                    image = new Image(fetched.get(imgCount).getSampleURL(),(imagePreviews.getLayoutBounds().getWidth()/4),0,true,false,true);
+                } else {
+                    image = new Image(fetched.get(imgCount).getSampleURL(),((imagePreviews.getLayoutBounds().getWidth()/colMax)),0,true,false,true);
+                }
+
+            }
+            //imgLoaded is incremented when a image finishes loading
+            image.progressProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+                if(newValue.intValue() == 1){
+                    imgLoaded ++;
+                    System.out.println("loaded: "+ imgLoaded + " count:" + imgCount + "mem: " + Runtime.getRuntime().totalMemory() /1024/1024 + "MB");
+                    System.gc();
+                }
+            });
+
+            imageView = new ImageView(image);
+            imageView.fitWidthProperty().bind(imagePreviews.widthProperty().divide(colMax).multiply(0.9));
+            imageView.setPreserveRatio(true);
+            StackPane sp = new StackPane();
+            sp.setId("img_"+imgCount);
+            sp.getChildren().add(imageView);
+            sp.getChildren().add(new Text(Integer.toString(imgCount)));
             // Calls the windowManager to load the Image window and parses it a booruItem when clicked
-            image1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            sp.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                          @Override public void handle(MouseEvent event) {
                                              try {
-                                                 String id = event.getSource().toString().split(",")[0].substring(17);
+                                                 String id = event.getSource().toString().substring(event.getSource().toString().lastIndexOf("_")+1,event.getSource().toString().lastIndexOf("]"));
                                                  windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)),searchField.getText());
                                              } catch (Exception e) {
                                                  System.out.println("SearchController::displayImagePreviews::setOnMouseClicked");
@@ -100,17 +134,17 @@ public class SearchController extends Controller{
 
                                          }});
 
-            System.out.println("images: " + imgCount);
-            imageGrid.add(image1,colNum, rowNum);
+
+            imageGrid.getChildren().add(sp);
             imgCount ++;
             colNum ++;
         }
         // Adds a listener to the ScrollPane so that when the bottom is reached more images can be loaded
         imagePreviews.vvalueProperty().addListener(
                 (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                    if(newValue.intValue() == 1 && oldValue.intValue()!= 1){
+                    // Only run scroll load if all images are in loaded state to prevent infinite loading
+                    if(newValue.intValue() == 1 && imgLoaded == imgCount){
                         scrollLoad();
-
                     }
                 });
     }
@@ -151,14 +185,26 @@ public class SearchController extends Controller{
                                     if (input.split(" = ").length > 1) {
                                         searchField.setText(input.split(" = ")[1]);
                                     }
-
                                 }
+                                break;
+                            case("Preview Mode"):
+                                if(input.split(" = ")[1].equals("Sample")){
+                                    imageThumbnails = false;
+                                }
+                                break;
+                            case("Preview Columns"):
+                                if (Integer.parseInt(input.split(" = ")[1]) > 0){
+                                    colMax = Integer.parseInt(input.split(" = ")[1]);
+                                }
+                                break;
                         }
                     }
                 } catch (IOException e) {
                     System.out.println("SearchController::loadSettings \n Error reading settings \n");
                     System.out.println(e.toString());
-                }
+                } catch (ArrayIndexOutOfBoundsException e){
+                //Swallow since if this is thrown the setting is empty
+            }
             } catch (FileNotFoundException e){
                 System.out.println("SearchController::loadSettings \n settings.conf not found \n");
                 System.out.println(e.toString());
