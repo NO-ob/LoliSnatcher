@@ -40,3 +40,12 @@ Tasks
     - [ ] Make the snatcher remove offending item from the arraylist during an exception and then continue
 - [x] Webm and Gif support
         - gif viewing implemented, webm viewing will never work as javafx only supports mp4 and flv so webm is opened in MPV
+
+
+How to Build
+ - Install Maven
+ - Download GraalVM https://github.com/graalvm/graalvm-ce-builds/releases
+ - Extract to a location
+ - export GRAALVM_HOME=/path to graalvm/
+ - mvn clean javafx:run
+ - mvn clean client:build
