@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javafx.scene.image.Image;
 

@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,10 +22,10 @@ public class WindowManager {
         Parent root = searchLoader.load();
         Scene scene = new Scene(root);
         searchController = searchLoader.getController();
+        searchStage.setScene(scene);
         searchController.setStage(searchStage);
         searchController.setWindowManager(this);
         searchStage.setTitle("Loli Snatcher");
-        searchStage.setScene(scene);
         searchStage.show();
 
     }
@@ -33,22 +33,22 @@ public class WindowManager {
     /** Opens an image window if it's not already open, if it is it will just parse it a new item
      *
      * @param booruItem
-     * @param text
+     * @param searchTags
      * @throws Exception
      */
     public void imageWindowLoader(BooruItem booruItem, String searchTags) throws Exception {
         if (imageController == null){
             try {
-            Stage ImageStage = new Stage();
-            FXMLLoader imageLoader = new FXMLLoader(getClass().getResource("ImageWindow.fxml"));
-            Parent root = imageLoader.load();
-            imageController = imageLoader.getController();
-            ImageStage.setTitle("Image");
-            ImageStage.setScene(new Scene(root));
-            ImageStage.show();
-            imageController.setStage(ImageStage);
-            imageController.setWindowManager(this);
-            ImageStage.setOnCloseRequest(event -> imageController = null);
+                Stage ImageStage = new Stage();
+                FXMLLoader imageLoader = new FXMLLoader(getClass().getResource("ImageWindow.fxml"));
+                Parent root = imageLoader.load();
+                imageController = imageLoader.getController();
+                ImageStage.setTitle("Image");
+                ImageStage.setScene(new Scene(root));
+                ImageStage.show();
+                imageController.setStage(ImageStage);
+                imageController.setWindowManager(this);
+                ImageStage.setOnCloseRequest(event -> imageController = null);
             } catch (Exception e){
                 System.out.println("\nWindowManager::imageWindowLoader");
                 System.out.println(e.toString());
@@ -98,13 +98,14 @@ public class WindowManager {
                 settingsStage.show();
                 settingsController.setStage(settingsStage);
                 settingsController.setWindowManager(this);
+                settingsController.updateSettings();
                 settingsStage.setOnCloseRequest(event -> {settingsController = null; searchController.setBooruSelector();});
             } catch (Exception e){
                 System.out.println("\nWindowManager::settingsWindowLoader");
                 System.out.println(e.toString());
             }
         }
-        settingsController.updateSettings();
+
     }
 
     public void putTag(String tag){

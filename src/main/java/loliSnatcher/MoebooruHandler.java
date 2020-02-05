@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;

@@ -1,26 +1,21 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
-import javafx.beans.value.ChangeListener;
+
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.io.*;
-import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 
 public class SearchController extends Controller{
@@ -30,9 +25,11 @@ public class SearchController extends Controller{
     private ScrollPane imagePreviews;
     @FXML
     private FlowPane imageGrid;
-
+    boolean launched = false;
     int imgCount = 0;
     int imgLoaded = 0;
+    int imgSelected = 0;
+    int imgPrevSelected = 0;
     int rowNum = 0;
     int colNum = 0;
     int limit = 20;
@@ -42,32 +39,34 @@ public class SearchController extends Controller{
     String prevBooru = "";
     /**
      * Fetches an arrayList of BooruItems when the search button is clicked
-     * @param event
+     * @param
      */
     @FXML
-    private void processSearch(ActionEvent event){
+    private void processSearch(){
         // Resets the ScrollPane
-            updateSettings();
-            imageGrid.getChildren().clear();
-            imagePreviews.setVvalue(0);
-            if (searchField.getText().isEmpty()){searchField.setText(" ");}
+        updateSettings();
+        imageGrid.getChildren().clear();
+        imagePreviews.setVvalue(0);
+        if (searchField.getText().isEmpty()){searchField.setText(" ");}
 
-            //Gets Booru selected in the ComboBox
-            Booru selected = (Booru) booruSelector.getValue();
-            booruHandler = getBooruHandler(selected,limit);
+        //Gets Booru selected in the ComboBox
+        Booru selected = (Booru) booruSelector.getValue();
+        booruHandler = getBooruHandler(selected,limit);
 
-            fetched = booruHandler.Search(searchField.getText());
-            prevTags = searchField.getText();
-            prevBooru = selected.getName();
+        fetched = booruHandler.Search(searchField.getText());
+        prevTags = searchField.getText();
+        prevBooru = selected.getName();
 
-            // Displays images if the fetched list is not empty
-             if (fetched.size() > 0) {
-                 rowNum = 0;
-                 imgCount = 0;
-                 imgLoaded = 0;
-                 colNum = 0;
-                 displayImagePreviews(fetched);
-            }
+        // Displays images if the fetched list is not empty
+        if (fetched.size() > 0) {
+            rowNum = 0;
+            imgCount = 0;
+            imgLoaded = 0;
+            colNum = 0;
+            imgSelected = 0;
+            imgPrevSelected = 0;
+            displayImagePreviews(fetched);
+        }
 
 
     }
@@ -90,8 +89,6 @@ public class SearchController extends Controller{
     private void displayImagePreviews(ArrayList<BooruItem> fetched){
         while (imgCount < fetched.size()){
             // Resets column and increments the row when 4 Image views have been put in the grid
-            if (colNum > colMax){rowNum++;colNum = 0;}
-
             ImageView imageView = null;
             Image image = null;
             //Load thumbnails if thumbnail setting is enabled or image is gif/webm
@@ -117,36 +114,50 @@ public class SearchController extends Controller{
             imageView = new ImageView(image);
             imageView.fitWidthProperty().bind(imagePreviews.widthProperty().divide(colMax).multiply(0.9));
             imageView.setPreserveRatio(true);
-            StackPane sp = new StackPane();
-            sp.setId("img_"+imgCount);
-            sp.getChildren().add(imageView);
-            sp.getChildren().add(new Text(Integer.toString(imgCount)));
-            // Calls the windowManager to load the Image window and parses it a booruItem when clicked
-            sp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                                         @Override public void handle(MouseEvent event) {
-                                             try {
-                                                 String id = event.getSource().toString().substring(event.getSource().toString().lastIndexOf("_")+1,event.getSource().toString().lastIndexOf("]"));
-                                                 windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)),searchField.getText());
-                                             } catch (Exception e) {
-                                                 System.out.println("SearchController::displayImagePreviews::setOnMouseClicked");
-                                                 System.out.println(e.toString());
-                                             }
+            Button imgButton = new Button();
+            imgButton.setId("img_"+imgCount);
+            imgButton.setGraphic(imageView);
+            imgButton.setStyle("-fx-padding: 0");
+            imgButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override public void handle(ActionEvent event) {
+                    try {
+                        System.out.println(event.getSource());
+                        String id = event.getSource().toString().substring(event.getSource().toString().lastIndexOf("_")+1,event.getSource().toString().lastIndexOf(","));
+                        //only load if the image isn't the previous loaded since it will causes and infinity loop if a video is loaded in mpv
+                        if(imgSelected != Integer.parseInt(id)){
+                            windowManager.imageWindowLoader(fetched.get(Integer.parseInt(id)),searchField.getText());
+                            imgSelected = Integer.parseInt(id);
+                            System.out.println("clicked" + id);
+                            //request focus of clicked stack pane
+                            StackPane tmp = (StackPane) event.getSource();
+                            tmp.requestFocus();
+                            imgSelected = Integer.parseInt(id);
+                            imgPrevSelected = imgSelected;
+                        }
+                    } catch (Exception e) {
+                        System.out.println("SearchController::displayImagePreviews::setOnMouseClicked");
+                        System.out.println(e.toString());
+                    }
 
-                                         }});
+                }});
+            //Fire button press when button is focused
+            imgButton.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
+                imgButton.fire();
+            });
+            imageGrid.getChildren().add(imgButton);
 
+            // Adds a listener to the ScrollPane so that when the bottom is reached more images can be loaded
+            imagePreviews.vvalueProperty().addListener(
+                    (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+                        // Only run scroll load if all images are in loaded state to prevent infinite loading
+                        if(newValue.intValue() == 1 && imgLoaded == imgCount){
+                            scrollLoad();
+                        }
+                    });
 
-            imageGrid.getChildren().add(sp);
             imgCount ++;
             colNum ++;
         }
-        // Adds a listener to the ScrollPane so that when the bottom is reached more images can be loaded
-        imagePreviews.vvalueProperty().addListener(
-                (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
-                    // Only run scroll load if all images are in loaded state to prevent infinite loading
-                    if(newValue.intValue() == 1 && imgLoaded == imgCount){
-                        scrollLoad();
-                    }
-                });
     }
 
     /** Calls the model to load the snatcher window and parses it the selected booru
@@ -182,7 +193,7 @@ public class SearchController extends Controller{
                                 break;
                             case("Default Tags"):
                                 if (searchField.getText().isEmpty()){
-                                    if (input.split(" = ").length > 1) {
+                                    if (input.split(" = ").length > 1 && !launched) {
                                         searchField.setText(input.split(" = ")[1]);
                                     }
                                 }
@@ -190,6 +201,8 @@ public class SearchController extends Controller{
                             case("Preview Mode"):
                                 if(input.split(" = ")[1].equals("Sample")){
                                     imageThumbnails = false;
+                                } else {
+                                    imageThumbnails = true;
                                 }
                                 break;
                             case("Preview Columns"):
@@ -198,23 +211,40 @@ public class SearchController extends Controller{
                                 }
                                 break;
                         }
+
                     }
                 } catch (IOException e) {
                     System.out.println("SearchController::loadSettings \n Error reading settings \n");
                     System.out.println(e.toString());
                 } catch (ArrayIndexOutOfBoundsException e){
-                //Swallow since if this is thrown the setting is empty
-            }
+                    //Swallow since if this is thrown the setting is empty
+                }
             } catch (FileNotFoundException e){
                 System.out.println("SearchController::loadSettings \n settings.conf not found \n");
                 System.out.println(e.toString());
             }
 
         }
+        launched = true;
     }
 
+    @Override
+    public void setStage(Stage stage) {
+        this.stage = stage;
+        updateSettings();
+        setBooruSelector();
 
-
-
-
+        //Things to do on keypresses
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent e) {
+                imgPrevSelected = imgSelected;
+                switch (e.getCode()){
+                    //search when enter is pressed
+                    case ENTER:
+                        processSearch();
+                        break;
+                }
+            }
+        });
+    }
 }
