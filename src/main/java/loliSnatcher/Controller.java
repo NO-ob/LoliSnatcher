@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

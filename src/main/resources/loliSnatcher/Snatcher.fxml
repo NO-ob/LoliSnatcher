@@ -6,16 +6,11 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.no.loliSnatcher.SnatcherController"
+            fx:controller="loliSnatcher.SnatcherController"
             prefHeight="400.0" prefWidth="600.0" fx:id="main">
-
         <columnConstraints>
-            <ColumnConstraints percentWidth="45"
-                               maxWidth="Infinity" halignment="CENTER">
-            </ColumnConstraints>
-            <ColumnConstraints percentWidth="45"
-                               maxWidth="Infinity" halignment="CENTER">
-            </ColumnConstraints>
+            <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+            <ColumnConstraints percentWidth="45" halignment="CENTER"/>
         </columnConstraints>
         <Label text="Image Amount"  GridPane.columnIndex="0" GridPane.rowIndex="0" />
         <TextField fx:id="amountField" text="20" GridPane.columnIndex="1" GridPane.rowIndex="0"/>

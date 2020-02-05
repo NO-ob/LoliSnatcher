@@ -6,14 +6,14 @@
 <?import javafx.scene.image.ImageView?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.no.loliSnatcher.ImageWindowController" fx:id="main" prefHeight="600" prefWidth="600"
+      fx:controller="loliSnatcher.ImageWindowController" fx:id="main" prefHeight="600" prefWidth="600"
       >
 
     <ImageView fx:id="fullImage" >
     </ImageView>
     <HBox fx:id="tagBox" >
         <ListView fx:id="tagList" maxHeight="50"/>
-        <Button fx:id="saveButton" text="Save" prefHeight="40" onAction="#saveImage"></Button>
-        <Button fx:id="browserButton" text="Open in Browser" prefHeight="40" onAction="#openImage"></Button>
+        <Button fx:id="saveButton" text="Save" prefHeight="40" onAction="#saveImage"/>
+        <Button fx:id="browserButton" text="Open in Browser" prefHeight="40" onAction="#openImage"/>
     </HBox>
 </VBox>

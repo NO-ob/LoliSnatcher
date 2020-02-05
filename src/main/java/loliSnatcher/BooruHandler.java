@@ -1,9 +1,7 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public abstract class BooruHandler {
     protected int pageNum = 0;

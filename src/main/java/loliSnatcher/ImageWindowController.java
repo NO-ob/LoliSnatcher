@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,11 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,7 +99,7 @@ public class ImageWindowController extends Controller{
     @FXML
     private void saveImage(){
         ImageWriter writerClass = new ImageWriter();
-        writerClass.writeImage(writerClass.makeFile(savePath,fileName, imageItem,searchTags),fullImage.getImage());
+        writerClass.writeImage(writerClass.makeFile(savePath,fileName, imageItem,searchTags));
         writerClass = null;
     }
 

@@ -1,4 +1,4 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 /**
  * A BooruItem stores information about an image from the booru site the

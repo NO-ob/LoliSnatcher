@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="loliSnatcher.SettingsController"
+      prefHeight="400.0" prefWidth="600.0" fx:id="main">
+        <VBox>
+                <Button fx:id="globalButton" minWidth="80" text="Global" onAction="#switchOpts"/>
+                <Button fx:id="searchButton" minWidth="80" text="Search" onAction="#switchOpts"/>
+                <Button fx:id="snatcherButton" minWidth="80" text="Snatcher" onAction="#switchOpts"/>
+                <Button fx:id="booruButton" minWidth="80" text="Boorus" onAction="#switchOpts"/>
+
+        </VBox>
+        <VBox>
+                <ScrollPane>
+                        <StackPane>
+                                <GridPane fx:id="globalOpts">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                        </columnConstraints>
+                                        <Label text="Save Path" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="savePathField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                <tooltip>
+                                                        <Tooltip text="Path to save Images to"/>
+                                                </tooltip>
+                                        </TextField>
+                                        <Label text="Filename"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextField fx:id="fileNameField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <tooltip>
+                                                        <Tooltip text="Naming convention for files, default is the filehash/ standard booru file name. The following variables can be used in the name. $SEARCH[n] $TAGS[n] $ID $HASH $EXT please note that files are overwritten if they have duplicate names"/>
+                                                </tooltip>
+                                        </TextField>
+                                </GridPane>
+                                <GridPane fx:id="searchOpts" visible="false">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+
+                                    <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                </columnConstraints>
+                                <Label text="Limit"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="searchLimitField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                        <tooltip>
+                                                <Tooltip text="How many images to be fetched per page (1-100)"/>
+                                        </tooltip>
+                                </TextField>
+                                <Label text="Default Tags"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="defaultTagsField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <tooltip>
+                                                <Tooltip text="Default tags to be put in the search field when the program is launched"/>
+                                        </tooltip>
+                                </TextField>
+                                <Label text="Preview Mode"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <Label text="Preview Columns"  GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                        <TextField fx:id="previewColumnsField" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                <tooltip>
+                                                        <Tooltip text="Amount of columns for displaying the preview images "/>
+                                                </tooltip>
+                                        </TextField>
+                                </GridPane>
+
+                                <GridPane fx:id="snatcherOpts" visible="false">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                        </columnConstraints>
+                                        <Label text="Sleep (MS)"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="sleepField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                <tooltip>
+                                                        <Tooltip text="Time to sleep between snatches in milliseconds"/>
+                                                </tooltip>
+                                        </TextField>
+                                </GridPane>
+                                <GridPane fx:id="booruOpts" visible="false">
+                                        <columnConstraints>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                                <ColumnConstraints percentWidth="45" halignment="CENTER"/>
+                                        </columnConstraints>
+                                        <Label text="Name"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                        <TextField fx:id="booruNameField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                <tooltip>
+                                                        <Tooltip text="Name of the booru"/>
+                                                </tooltip>
+                                        </TextField>
+                                        <Label text="Favicon URL"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextField fx:id="faviconField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                <tooltip>
+                                                        <Tooltip wrapText="true" prefWidth="200" text="URL for the booru's favicon, You may need to upload the favicon elsewhere as javafx is weird about ico files. Imgur will auto convert to png if you just copy and paste the file there. You can also load locally but writing file:/// + path to file  .e.g file:////home/user/Downloads/favicon.png"/>
+                                                </tooltip>
+                                        </TextField>
+                                        <Label text="Base URL"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <TextField fx:id="baseURLField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <tooltip>
+                                                        <Tooltip wrapText="true" prefWidth="200" text="Booru Base URL e.g. https://danbooru.donmai.us"/>
+                                                </tooltip>
+                                        </TextField>
+                                        <Button fx:id="testButton" minWidth="80" text="Test" onAction="#testBooru" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                </GridPane>
+                        </StackPane>
+                </ScrollPane>
+                <Button fx:id="saveButton" minWidth="80" text="Save" onAction="#writeSettings"/>
+        </VBox>
+</HBox>

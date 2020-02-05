@@ -1,21 +1,14 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import org.w3c.dom.ls.LSOutput;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Controller for the Snatcher window this is what handles the batch downloading [Snatching]
@@ -70,25 +63,18 @@ public class SnatcherController extends Controller{
         // Task  is used so this bit of code is run on a seperate thread to the GUI otherwise it freezes until this work is done
         Task writer = new Task<Void>(){
             @Override public Void call() {
+                if(finalFetched.size() == 0){
+                    updateTitle("No Results .·´¯`(>▂<)´¯`·.");
+                }
                 for (int i = 0; i < finalFetched.size(); i++){
                     BooruItem item = finalFetched.get(i);
                     //Updates the task progress
                     updateProgress(i, finalFetched.size());
                     // Skips item if it is webm or gif as the javafx image objects cant display them
-                    if (item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("webm") || item.getFileURL().substring(item.getFileURL().lastIndexOf(".") + 1).equals("gif")) {
-                        System.out.println("skipped: " + item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
-                    } else {
                         // Updates the title of the task with the image url
                         updateTitle(item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
-                        // Creates a new image from the URL of the current booruitem
-                        Image image = new Image(item.getFileURL());
-                        System.out.println(image.getUrl());
-                        while (image.getProgress() != 1){
-                            System.out.println("waiting");
-                        }
                         ImageWriter imageWriter = new ImageWriter();
-                        imageWriter.writeImage(imageWriter.makeFile(dirPath,fileName,item,searchTags),image);
-                    }
+                        imageWriter.writeImage(imageWriter.makeFile(dirPath,fileName,item,searchTags));
                     try {
                         updateTitle("(∪｡∪)｡｡｡zzz");
                         Thread.sleep(timeout);

@@ -1,38 +1,41 @@
-package com.no.loliSnatcher;
+package loliSnatcher;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
+
+
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.FileOutputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 
+
 public class ImageWriter {
-    private String savePath;
-    private String fileName;
     private BooruItem item;
-    private Image fullImage;
 
     /**
      * Writes and image to a file
      * @param imageFile
-     * @param fullImage
      */
-    public void writeImage(File imageFile, Image fullImage) {
-        this.fullImage = fullImage;
-        try {
-            BufferedImage image = ImageIO.read(new URL(item.getFileURL()));
-            ImageIO.write(image, item.getFileURL().substring(item.getFileURL().lastIndexOf(".")+1),imageFile);
+    public void writeImage(File imageFile) {
 
+        try {
+            InputStream initialStream = new URL(item.getFileURL()).openStream();
+            OutputStream outStream = new FileOutputStream(imageFile);
+            byte[] buffer = new byte[8 * 1024];
+            int bytesRead;
+            while ((bytesRead = initialStream.read(buffer)) != -1) {
+                outStream.write(buffer, 0, bytesRead);
+            }
+            initialStream.close();
+            outStream.flush();
+            outStream.close();
         } catch (IOException e){
-            System.out.println("ImageWindowController::saveImage");
-            System.out.println("\n Failed to Write File \n" + item.getFileURL().substring(item.getFileURL().lastIndexOf("/")+1) + "\n");
+            e.printStackTrace();
         }
     }
+
 
     /** Converts the filename string into a proper file Name then creates an empty file ready to be written to
      *
