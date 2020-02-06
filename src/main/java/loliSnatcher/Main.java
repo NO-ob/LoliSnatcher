@@ -8,11 +8,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         WindowManager windowManager = new WindowManager();
         windowManager.searchWindowLoader(primaryStage);
-
     }
     public static void main(String[] args){
         launch(args);
-
     }
 }
 
