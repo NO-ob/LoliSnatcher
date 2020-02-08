@@ -116,6 +116,7 @@
                         <list>java.net.URI</list>
                         <list>java.net.URISyntaxException</list>
                         <list>javafx.geometry.HPos</list>
+                        <list>javafx.scene.paint.Color</list>
                         <list>loliSnatcher.Main</list>
                         <list>loliSnatcher.Booru</list>
                         <list>loliSnatcher.BooruHandler</list>

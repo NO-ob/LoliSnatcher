@@ -13,7 +13,7 @@
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="loliSnatcher.SettingsController"
-      prefHeight="400.0" prefWidth="600.0" fx:id="main">
+      prefHeight="300.0" prefWidth="500.0" fx:id="main">
         <VBox>
                 <Button fx:id="globalButton" minWidth="80" text="Global" onAction="#switchOpts"/>
                 <Button fx:id="searchButton" minWidth="80" text="Search" onAction="#switchOpts"/>

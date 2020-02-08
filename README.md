@@ -29,15 +29,12 @@ Tasks
     - [x] Default Tags
     - [x] Custom File Names
 - [x] Fix bug which causes images to load infinitely until system crashes
-- [ ] Design UI
-    - [ ] Fix Image window layout
-    - [ ] Fix Main window layout
-    - [ ] Tidy UI
-    - [ ] Themes
+- [x] Design UI
+    - [x] Fix Image window layout
+    - [x] Fix Main window layout
+    - [x] Tidy UI
+    - [x] Themes
         - [ ] Neir automata menu style maybe
-- [ ] Refactoring
-    - [ ] Use XML Parser instead of string functions and regex in the booruHandlers and Snatcher
-    - [ ] Make the snatcher remove offending item from the arraylist during an exception and then continue
 - [x] Webm and Gif support
         - gif viewing implemented, webm viewing will never work as javafx only supports mp4 and flv so webm is opened in MPV
 

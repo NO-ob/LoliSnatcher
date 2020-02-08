@@ -8,21 +8,29 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class SearchController extends Controller{
+    private Stage stage;
+    @FXML
+    private HBox searchBar;
     @FXML
     private TextField searchField;
     @FXML
     private ScrollPane imagePreviews;
+    @FXML
+    VBox main;
     @FXML
     private FlowPane imageGrid;
     boolean launched = false;
@@ -96,7 +104,7 @@ public class SearchController extends Controller{
                 image = new Image(fetched.get(imgCount).getThumbnailURL(),0,0,true,false,true);
             } else {
                 if(colMax < 4){
-                    image = new Image(fetched.get(imgCount).getSampleURL(),(imagePreviews.getLayoutBounds().getWidth()/4),0,true,false,true);
+                    image = new Image(fetched.get(imgCount).getSampleURL(),(imagePreviews.getLayoutBounds().getHeight()/4),0,true,false,true);
                 } else {
                     image = new Image(fetched.get(imgCount).getSampleURL(),((imagePreviews.getLayoutBounds().getWidth()/colMax)),0,true,false,true);
                 }
@@ -106,8 +114,6 @@ public class SearchController extends Controller{
             image.progressProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
                 if(newValue.intValue() == 1){
                     imgLoaded ++;
-                    System.out.println("loaded: "+ imgLoaded + " count:" + imgCount + "mem: " + Runtime.getRuntime().totalMemory() /1024/1024 + "MB");
-                    System.gc();
                 }
             });
 
@@ -116,8 +122,8 @@ public class SearchController extends Controller{
             imageView.setPreserveRatio(true);
             Button imgButton = new Button();
             imgButton.setId("img_"+imgCount);
+
             imgButton.setGraphic(imageView);
-            imgButton.setStyle("-fx-padding: 0");
             imgButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override public void handle(ActionEvent event) {
                     try {
@@ -144,6 +150,7 @@ public class SearchController extends Controller{
             imgButton.focusedProperty().addListener((ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) -> {
                 imgButton.fire();
             });
+            imgButton.setEffect(new DropShadow(BlurType.THREE_PASS_BOX, Color.BLACK, 10, 0, 0, 4));
             imageGrid.getChildren().add(imgButton);
 
             // Adds a listener to the ScrollPane so that when the bottom is reached more images can be loaded
@@ -152,6 +159,14 @@ public class SearchController extends Controller{
                         // Only run scroll load if all images are in loaded state to prevent infinite loading
                         if(newValue.intValue() == 1 && imgLoaded == imgCount){
                             scrollLoad();
+                        }
+                        if (newValue.doubleValue() >= 0.11){
+                            searchBar.setVisible(false);
+                            searchBar.setManaged(false);
+                        }
+                        if (newValue.doubleValue() <= 0.1){
+                            searchBar.setVisible(true);
+                            searchBar.setManaged(true);
                         }
                     });
 
@@ -233,7 +248,6 @@ public class SearchController extends Controller{
         this.stage = stage;
         updateSettings();
         setBooruSelector();
-
         //Things to do on keypresses
         stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
