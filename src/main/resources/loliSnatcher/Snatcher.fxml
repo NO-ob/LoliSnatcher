@@ -7,7 +7,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="loliSnatcher.SnatcherController"
-            prefHeight="400.0" prefWidth="600.0" fx:id="main">
+          prefHeight="400.0" prefWidth="350.0" fx:id="main">
         <columnConstraints>
             <ColumnConstraints percentWidth="45" halignment="CENTER"/>
             <ColumnConstraints percentWidth="45" halignment="CENTER"/>

@@ -56,6 +56,7 @@ public class ImageWindowController extends Controller{
         System.out.println((Runtime.getRuntime().totalMemory()) / 1024 / 1204 + " MB");
         if (imageItem.getExt().equals("webm")){
             try {
+                fullImage.setImage(new Image(imageItem.getThumbnailURL(),0,0,true,false,true));
                 Runtime.getRuntime().exec("mpv "+imageItem.getFileURL());
             } catch(IOException e){
 
@@ -66,16 +67,17 @@ public class ImageWindowController extends Controller{
             } else {
                 fullImage.setImage(new Image(imageItem.getFileURL(),0,0,true,false,false));
             }
-            fullImage.setPreserveRatio(true);
 
-            //Set image fit to height or fit to width depending on which value is bigger in that image
-            if (imageItem.getHeight() > imageItem.getWidth()){
-                //0.9 is used for height as there are buttons and a listview underneath the image
-                fullImage.fitHeightProperty().bind(stage.heightProperty().multiply(0.85));
-            } else {
-                fullImage.fitWidthProperty().bind(stage.widthProperty());
-            }
-            System.out.println((Runtime.getRuntime().totalMemory()) / 1024 / 1204 + " MB");
+        }
+        fullImage.setPreserveRatio(true);
+        //Set image fit to height or fit to width depending on which value is bigger in that image
+        if (imageItem.getHeight() > imageItem.getWidth()){
+
+            fullImage.fitHeightProperty().bind(stage.heightProperty().subtract(100));
+            //stage.setWidth(fullImage.getFitWidth() + 50);
+        } else {
+            fullImage.fitWidthProperty().bind(stage.widthProperty().subtract(50));
+            //stage.setHeight(fullImage.getFitHeight() + 100);
         }
     }
     public void setTags(){

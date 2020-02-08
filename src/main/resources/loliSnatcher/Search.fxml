@@ -8,18 +8,20 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.layout.Pane?>
 <VBox fx:controller="loliSnatcher.SearchController" prefWidth="800" prefHeight="600"
-      xmlns:fx="http://javafx.com/fxml" alignment="center"
-          >
-<padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
-    <HBox prefWidth="800">
-        <TextField fx:id="searchField" prefHeight="40" prefWidth="300"/>
-        <ComboBox prefHeight="40" prefWidth="130" fx:id="booruSelector"/>
-        <Button fx:id="searchButton" text="Search" prefHeight="40" prefWidth="70" onAction="#processSearch"/>
-        <Button fx:id="snatchButton" text="Snatch" prefHeight="40" prefWidth="70" onAction="#snatcherWindowLoader"/>
-        <Button fx:id="settingsButton" text="Settings" prefHeight="40" prefWidth="90" onAction="#settingsWindowLoader"/>
+      xmlns:fx="http://javafx.com/fxml" alignment="center" fx:id="main"
+>
+    <HBox fx:id="searchBar">
+        <TextField fx:id="searchField"/>
+        <ComboBox prefHeight="40"  fx:id="booruSelector"/>
+        <Pane fx:id="buttonSpacer" HBox.hgrow="SOMETIMES"/>
+        <Button fx:id="searchButton" text="Search" onAction="#processSearch"/>
+        <Button fx:id="snatchButton" text="Snatch"  onAction="#snatcherWindowLoader"/>
+        <Button fx:id="settingsButton" text="Settings"  onAction="#settingsWindowLoader"/>
     </HBox>
-    <ScrollPane fx:id="imagePreviews" fitToWidth="true" prefHeight="500" vbarPolicy="ALWAYS">
+    <ScrollPane fx:id="imagePreviews" fitToWidth="true" vbarPolicy="ALWAYS">
         <FlowPane fx:id="imageGrid"  >
         </FlowPane>
     </ScrollPane>

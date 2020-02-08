@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.io.File;
 
 /**
  * The WindowManager class is used to create windows and allow them to talk to each other
@@ -26,6 +27,10 @@ public class WindowManager {
         searchController.setStage(searchStage);
         searchController.setWindowManager(this);
         searchStage.setTitle("Loli Snatcher");
+        File tmp = new File(System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/search.css");
+        if (tmp.exists()){
+            scene.getStylesheets().add("file://" + System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/search.css");
+        }
         searchStage.show();
 
     }
@@ -44,7 +49,12 @@ public class WindowManager {
                 Parent root = imageLoader.load();
                 imageController = imageLoader.getController();
                 ImageStage.setTitle("Image");
-                ImageStage.setScene(new Scene(root));
+                Scene scene = new Scene(root);
+                File tmp = new File(System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/image.css");
+                if (tmp.exists()){
+                    scene.getStylesheets().add("file://" + System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/image.css");
+                }
+                ImageStage.setScene(scene);
                 ImageStage.show();
                 imageController.setStage(ImageStage);
                 imageController.setWindowManager(this);
@@ -71,7 +81,12 @@ public class WindowManager {
                 snatcherController = snatcherLoader.getController();
                 snatcherController.setTags(tags);
                 snatcherStage.setTitle("Snatcher");
-                snatcherStage.setScene(new Scene(root));
+                Scene scene = new Scene(root);
+                File tmp = new File(System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/settings.css");
+                if (tmp.exists()){
+                    scene.getStylesheets().add("file://" + System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/settings.css");
+                }
+                snatcherStage.setScene(scene);
                 snatcherStage.show();
                 snatcherController.setStage(snatcherStage);
                 snatcherController.setWindowManager(this);
@@ -94,7 +109,12 @@ public class WindowManager {
                 Parent root = settingsLoader.load();
                 settingsController = settingsLoader.getController();
                 settingsStage.setTitle("Settings");
-                settingsStage.setScene(new Scene(root));
+                Scene scene = new Scene(root);
+                settingsStage.setScene(scene);
+                File tmp = new File(System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/settings.css");
+                if (tmp.exists()){
+                    scene.getStylesheets().add("file://" + System.getProperty("user.home")+"/.loliSnatcher/config/theme/active/settings.css");
+                }
                 settingsStage.show();
                 settingsController.setStage(settingsStage);
                 settingsController.setWindowManager(this);
