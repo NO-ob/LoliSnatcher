@@ -12,7 +12,7 @@ File Name Variables
  - $HASH - File hash
  - $EXT - File extension
 
-![github-small](https://i.imgur.com/580umw6.png)
+![github-small](https://raw.githubusercontent.com/NO-ob/LoliSnatcher/master/out.gif)
 
 Tasks
 - [x] Search and retrieve data from gelbooru
