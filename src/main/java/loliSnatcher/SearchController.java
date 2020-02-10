@@ -157,7 +157,7 @@ public class SearchController extends Controller{
             imagePreviews.vvalueProperty().addListener(
                     (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
                         // Only run scroll load if all images are in loaded state to prevent infinite loading
-                        if(newValue.intValue() == 1 && imgLoaded == imgCount){
+                        if(newValue.intValue() == 1 && imgLoaded == imgCount && oldValue.intValue() != 1){
                             scrollLoad();
                         }
                         if (newValue.doubleValue() >= 0.11){
