@@ -10,6 +10,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
 <VBox fx:controller="loliSnatcher.SearchController" prefWidth="800" prefHeight="600"
       xmlns:fx="http://javafx.com/fxml" alignment="center" fx:id="main"
 >
@@ -25,4 +27,12 @@
         <FlowPane fx:id="imageGrid"  >
         </FlowPane>
     </ScrollPane>
+    <HBox fx:id="usageInfo">
+        <Label fx:id="counterLabel" text="Images: "></Label>
+        <Label fx:id="counterVal"></Label>
+        <Label text="  "></Label>
+        <Label fx:id="memoryLabel" text="Memory: "></Label>
+        <Label fx:id="memoryVal"></Label>
+    </HBox>
+
 </VBox>

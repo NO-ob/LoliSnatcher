@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BlurType;
@@ -32,19 +33,20 @@ public class SearchController extends Controller{
     @FXML
     VBox main;
     @FXML
+    Label counterVal,memoryVal;
+    @FXML
     private FlowPane imageGrid;
-    boolean launched = false;
+    boolean launched = false,maxxed = false;
     int imgCount = 0;
     int imgLoaded = 0;
     int imgSelected = 0;
     int imgPrevSelected = 0;
-    int rowNum = 0;
-    int colNum = 0;
     int limit = 20;
     int colMax = 4;
     boolean imageThumbnails = true;
     String prevTags = "";
     String prevBooru = "";
+    Runtime runtime = Runtime.getRuntime();
     /**
      * Fetches an arrayList of BooruItems when the search button is clicked
      * @param
@@ -67,12 +69,11 @@ public class SearchController extends Controller{
 
         // Displays images if the fetched list is not empty
         if (fetched.size() > 0) {
-            rowNum = 0;
             imgCount = 0;
             imgLoaded = 0;
-            colNum = 0;
             imgSelected = 0;
             imgPrevSelected = 0;
+            maxxed = false;
             displayImagePreviews(fetched);
         }
 
@@ -87,7 +88,12 @@ public class SearchController extends Controller{
      */
     private void scrollLoad() {
         fetched = getNextPage(searchField.getText());
-        displayImagePreviews(fetched);
+        if(fetched.size() <= imgCount){
+            maxxed = true;
+        } else {
+            displayImagePreviews(fetched);
+        }
+
     }
 
     /** Loads all of the image previews into the GridBox inside the ScrollPane
@@ -157,7 +163,7 @@ public class SearchController extends Controller{
             imagePreviews.vvalueProperty().addListener(
                     (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
                         // Only run scroll load if all images are in loaded state to prevent infinite loading
-                        if(newValue.intValue() == 1 && imgLoaded == imgCount && oldValue.intValue() != 1){
+                        if(newValue.intValue() == 1 && imgLoaded == imgCount && oldValue.intValue() != 1 && !maxxed){
                             scrollLoad();
                         }
                         if (newValue.doubleValue() >= 0.11){
@@ -171,7 +177,8 @@ public class SearchController extends Controller{
                     });
 
             imgCount ++;
-            colNum ++;
+            counterVal.setText(imgCount + "");
+            memoryVal.setText((runtime.totalMemory() - runtime.freeMemory())/1024/1024 + "M");
         }
     }
 

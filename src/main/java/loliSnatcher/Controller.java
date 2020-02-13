@@ -89,10 +89,13 @@ public abstract class Controller {
         booruSelector.setCellFactory(param -> new ListCell<Booru>() {
             final ImageView graphicNode = new ImageView();
 
+
             @Override
             public void updateItem(Booru item, boolean empty) {
 
                 super.updateItem(item, empty);
+                graphicNode.setPreserveRatio(true);
+                graphicNode.setFitWidth(16);
                 if (item == null || empty) {
                     setText(null);
                     setGraphic(null);
