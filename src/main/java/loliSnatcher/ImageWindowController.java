@@ -34,6 +34,7 @@ public class ImageWindowController extends Controller{
     private String savePath;
     private String fileName;
     private String searchTags;
+    private boolean DBEnabled = false;
     /**
      * Does tasks which need to be done on window creation, this cant be done when the controller instance is created
      * because the GUI doesn't exist at that point
@@ -101,7 +102,7 @@ public class ImageWindowController extends Controller{
     @FXML
     private void saveImage(){
         ImageWriter writerClass = new ImageWriter();
-        writerClass.writeImage(writerClass.makeFile(savePath,fileName, imageItem,searchTags));
+        writerClass.writeImage(writerClass.makeFile(savePath,fileName, imageItem,searchTags),DBEnabled);
         writerClass = null;
     }
 
@@ -146,6 +147,11 @@ public class ImageWindowController extends Controller{
                             case("File Name"):
                                 fileName = input.split(" = ")[1];
                                 break;
+                                case("Local Database"):
+                                    DBEnabled = Boolean.parseBoolean(input.split(" = ")[1]);
+                                    break;
+
+
                         }
                     }
                 } catch (IOException e) {

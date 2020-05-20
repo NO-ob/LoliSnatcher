@@ -47,6 +47,9 @@ public abstract class Controller {
             case("Moebooru"):
                 System.out.println(booru.getBaseURL());
                 return new MoebooruHandler(limit, booru.getBaseURL());
+            case("Local"):
+                System.out.println(booru.getBaseURL());
+                return new LocalbooruHandler(limit, booru.getBaseURL());
         }
         //System.out.println("set booru "+ booru.getName()+" " + booru.getBaseURL());
         return null;
@@ -74,7 +77,7 @@ public abstract class Controller {
         booruChoices.add(new Booru("Gelbooru", "https://gelbooru.com/favicon.ico","Gelbooru", "https://gelbooru.com"));
         booruChoices.add(new Booru("Danbooru", "https://i.imgur.com/7ek8bNs.png", "Danbooru", "https://danbooru.donmai.us"));
         booruChoices.add(new Booru("Yande.re", "https://i.imgur.com/nBzBZMw.png", "Moebooru","https://yande.re"));
-
+        booruChoices.add(new Booru("Localbooru","https://gelbooru.com/favicon.ico","Local",""));
         File dir = new File(System.getProperty("user.home")+"/.loliSnatcher/config/");
         //get array for .booru files from config directory
         File[] files = dir.listFiles((d, name) -> name.endsWith(".booru"));

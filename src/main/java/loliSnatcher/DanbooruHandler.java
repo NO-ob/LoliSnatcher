@@ -62,7 +62,6 @@ public class DanbooruHandler extends BooruHandler {
      * @param conn
      * @return
      */
-    @Override
     protected ArrayList getItems(HttpsURLConnection conn){
         if(conn!=null){
 

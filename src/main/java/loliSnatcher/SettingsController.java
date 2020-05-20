@@ -4,11 +4,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -29,6 +25,8 @@ public class SettingsController extends Controller {
     @FXML
     private TextField searchLimitField,defaultTagsField,savePathField,booruNameField,baseURLField,faviconField,fileNameField,sleepField,previewColumnsField;
     private ComboBox<String> previewMode;
+    @FXML
+    private CheckBox localDBCheckBox;
     @Override public void setStage(Stage stage) {
 
         this.stage = stage;
@@ -96,6 +94,9 @@ public class SettingsController extends Controller {
                             case ("Preview Columns"):
                                 previewColumnsField.setText(input.split(" = ")[1]);
                                 break;
+                            case ("Local Database"):
+                                localDBCheckBox.setSelected(Boolean.parseBoolean(input.split(" = ")[1]));
+                                break;
                         }
                     }
                 }
@@ -150,6 +151,8 @@ public class SettingsController extends Controller {
             fw.write("Save Path" + " = " + savePathField.getText());
             fw.write(System.lineSeparator());
             fw.write("File Name" + " = " + fileNameField.getText());
+            fw.write(System.lineSeparator());
+            fw.write("Local Database" + " = " + localDBCheckBox.isSelected());
             fw.write(System.lineSeparator());
             fw.write("Preview Mode" + " = " + previewMode.getSelectionModel().getSelectedItem());
             fw.write(System.lineSeparator());

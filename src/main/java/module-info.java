@@ -29,6 +29,7 @@ module lolisnatcher {
     requires javafx.fxml;
     requires java.desktop;
     requires java.management;
+    requires java.sql;
 
     opens loliSnatcher to javafx.fxml;
 

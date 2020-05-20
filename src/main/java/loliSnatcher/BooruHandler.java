@@ -13,7 +13,6 @@ public abstract class BooruHandler {
     BooruHandler(){}
 
     abstract public ArrayList Search(String tags);
-    abstract protected ArrayList getItems(HttpsURLConnection conn);
     abstract protected String getFileURL(String input);
     abstract protected String getSampleURL(String input);
     abstract protected String getThumbnailURL(String input);

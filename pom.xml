@@ -15,8 +15,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <javafx.version>13.0.1</javafx.version>
-        <client.plugin.version>0.1.15</client.plugin.version>
+        <javafx.version>14.0.1</javafx.version>
+        <sqlite.version>3.31.1</sqlite.version>
+        <client.plugin.version>0.1.24</client.plugin.version>
+        <junit.version>5.6.2</junit.version>
         <mainClassName>loliSnatcher.Main</mainClassName>
     </properties>
 
@@ -35,6 +37,16 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>${sqlite.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
         </dependency>
     </dependencies>
 

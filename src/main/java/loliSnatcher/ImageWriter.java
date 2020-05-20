@@ -9,19 +9,50 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.sql.SQLException;
 
 
 public class ImageWriter {
-    private BooruItem item;
-
+    public BooruItem item;
+    public String localID;
     /**
      * Writes and image to a file
      * @param imageFile
      */
-    public void writeImage(File imageFile) {
+    public void writeImage(File imageFile,Boolean DBEnabled) {
+            write(item.getFileURL(),imageFile);
+            if (DBEnabled){
+                LocalbooruHandler localHandler = new LocalbooruHandler(0,"");
+                // Create row in database and get the id of that row
+                localID = localHandler.createBooruItemRow(imageFile.getAbsolutePath());
+                //Create a sample file and write the sample to it
+                String samplePath =  System.getProperty("user.home") + "/.loliSnatcher/media/" + localID + "/" + "sample" + item.getSampleURL().substring(item.getSampleURL().lastIndexOf("."));
+                String thumbPath =  System.getProperty("user.home") + "/.loliSnatcher/media/" + localID + "/" + "thumbnail" + item.getThumbnailURL().substring(item.getThumbnailURL().lastIndexOf("."));
+                File file = new File(System.getProperty("user.home") + "/.loliSnatcher/media/" + localID + "/");
+                if (!file.exists()){
+                    file.mkdirs();
+                }
+                file = new File(samplePath);
+                write(item.getFileURL(),file);
+                //Create a thumbnail file and write the thumbnail to it
+                file = new File(thumbPath);
 
+                write(item.getFileURL(),file);
+                BooruItem newItem = new BooruItem("file:///" + imageFile.getAbsolutePath(),"file:///" + samplePath,"file:///" + thumbPath,item.getTags(),item.getPostURL(),item.getHeight(),item.getWidth(),Integer.parseInt(localID));
+                System.out.println(newItem.toString());
+                localHandler.updateBooruItemRow(newItem);
+                try {
+                    localHandler.dbConn.close();
+                } catch (SQLException e){
+                    System.out.println("ImageWriter::writeImage::SQLException");
+                    e.printStackTrace();
+                }
+            }
+    }
+
+    public void write(String URL, File imageFile){
         try {
-            InputStream initialStream = new URL(item.getFileURL()).openStream();
+            InputStream initialStream = new URL(URL).openStream();
             OutputStream outStream = new FileOutputStream(imageFile);
             byte[] buffer = new byte[8 * 1024];
             int bytesRead;
@@ -34,9 +65,8 @@ public class ImageWriter {
         } catch (IOException e){
             e.printStackTrace();
         }
+
     }
-
-
     /** Converts the filename string into a proper file Name then creates an empty file ready to be written to
      *
      * @param savePath
@@ -46,7 +76,6 @@ public class ImageWriter {
      * @return
      */
     public File makeFile(String savePath, String fileName, BooruItem item,String searchTags){
-        // $TAGS[n] $ID $HASH $EXT $SEARCH[n]
         this.item = item;
         String tagString = "";
         File file;

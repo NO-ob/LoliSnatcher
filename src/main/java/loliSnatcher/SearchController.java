@@ -55,6 +55,7 @@ public class SearchController extends Controller{
     private void processSearch(){
         // Resets the ScrollPane
         updateSettings();
+        resetVar();
         imageGrid.getChildren().clear();
         imagePreviews.setVvalue(0);
         if (searchField.getText().isEmpty()){searchField.setText(" ");}
@@ -69,11 +70,6 @@ public class SearchController extends Controller{
 
         // Displays images if the fetched list is not empty
         if (fetched.size() > 0) {
-            imgCount = 0;
-            imgLoaded = 0;
-            imgSelected = 0;
-            imgPrevSelected = 0;
-            maxxed = false;
             displayImagePreviews(fetched);
         }
 
@@ -177,11 +173,28 @@ public class SearchController extends Controller{
                     });
 
             imgCount ++;
-            counterVal.setText(imgCount + "");
-            memoryVal.setText((runtime.totalMemory() - runtime.freeMemory())/1024/1024 + "M");
+            setUsageInfo();
         }
     }
 
+    /**
+     * Sets the memory and image count labels
+     */
+    private void setUsageInfo(){
+        counterVal.setText(imgCount + "");
+        memoryVal.setText(( - runtime.freeMemory())/1024/1024 + "M");
+    }
+
+    /**
+     * Reset Variables
+     */
+    private void resetVar(){
+        imgCount = 0;
+        imgLoaded = 0;
+        imgSelected = 0;
+        imgPrevSelected = 0;
+        maxxed = false;
+    }
     /** Calls the model to load the snatcher window and parses it the selected booru
      *
      * @throws Exception

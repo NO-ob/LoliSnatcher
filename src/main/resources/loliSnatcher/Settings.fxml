@@ -10,6 +10,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.CheckBox?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="loliSnatcher.SettingsController"
@@ -41,6 +42,12 @@
                                                         <Tooltip text="Naming convention for files, default is the filehash/ standard booru file name. The following variables can be used in the name. $SEARCH[n] $TAGS[n] $ID $HASH $EXT please note that files are overwritten if they have duplicate names"/>
                                                 </tooltip>
                                         </TextField>
+                                        <Label text="Local Database"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <CheckBox fx:id="localDBCheckBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                <tooltip>
+                                                        <Tooltip text="When the local database is enabled you will be able to search through your snatched images like you would with a Booru"/>
+                                                </tooltip>
+                                        </CheckBox>
                                 </GridPane>
                                 <GridPane fx:id="searchOpts" visible="false">
                                 <columnConstraints>

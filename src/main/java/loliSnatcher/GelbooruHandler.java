@@ -62,7 +62,6 @@ public String baseURL;
      * @param conn
      * @return
      */
-    @Override
     protected ArrayList getItems(HttpsURLConnection conn){
         if(conn!=null){
 

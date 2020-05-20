@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * Controller for the Snatcher window this is what handles the batch downloading [Snatching]
  */
 public class SnatcherController extends Controller{
+    Boolean DBEnabled = false;
     @FXML
     GridPane main;
     @FXML
@@ -74,9 +75,9 @@ public class SnatcherController extends Controller{
                         // Updates the title of the task with the image url
                         updateTitle(item.getFileURL().substring(item.getFileURL().lastIndexOf("/") + 1));
                         ImageWriter imageWriter = new ImageWriter();
-                        imageWriter.writeImage(imageWriter.makeFile(dirPath,fileName,item,searchTags));
+                        imageWriter.writeImage(imageWriter.makeFile(dirPath,fileName,item,searchTags),DBEnabled);
                     try {
-                        updateTitle("(∪｡∪)｡｡｡zzz");
+                        updateTitle("");
                         Thread.sleep(timeout);
                     }
                     catch(InterruptedException ex) {
@@ -136,6 +137,9 @@ public class SnatcherController extends Controller{
                                 break;
                             case("Sleep Time"):
                                 sleepField.setText(input.split(" = ")[1]);
+                                break;
+                            case("Local Database"):
+                                DBEnabled = Boolean.parseBoolean(input.split(" = ")[1]);
                                 break;
                         }
                     }
